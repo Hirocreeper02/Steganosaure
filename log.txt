@@ -1,0 +1,1 @@
+[08.11.2023 : Emilien & Nils & Yoann] Ajout de la fonctionnalité Square Dispersion (merci à Nils pour l'idée)
