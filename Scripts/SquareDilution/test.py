@@ -1,3 +1,1 @@
-
-
-print(chr(131))
+print(not not 0)
