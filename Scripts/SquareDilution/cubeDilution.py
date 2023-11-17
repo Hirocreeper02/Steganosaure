@@ -11,7 +11,7 @@ import string
 
 source = None
 
-
+alphabet = "!#$%&'()*+,-./:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÖÜø£×ƒ«»¥ÊËÈÎÏßÔÙ÷§±"+'"'
 
 ### METHODS ###
 
@@ -67,7 +67,7 @@ def checkSquare(square:list,targetColor:int) -> bool:
         Vérifie si un carré a un nombre égal de valeurs paires et impaires sur la couleur souhaitée
         
         ==============================
-
+        
         Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
     """
     
@@ -121,7 +121,7 @@ def checkCube(square:list) -> bool:
         Puis applique les modifications d'inversion en fonction du checker board.
     """
     
-    actualCubeValue = sum(checkSquare(square, i) for i in range(3)) < 2
+    actualCubeValue = sum(checkSquare(square, i) for i in range(3)) <= 2
     
     return (actualCubeValue + (1 - checkBoard(square)))%2
 
