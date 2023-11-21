@@ -36,6 +36,8 @@ def incrementRandomPixel(square:list,targetColor:int) -> list:
     
     On met un pixel à une coordonnée aléatoire dont incrémente à la couleur voulue
     """
+
+    global source
     
     # print("LEN SQUARE",len(square),square)
     randomCoord = random.choice(square)
@@ -52,6 +54,8 @@ def getSquare() -> list:
     """
         Divise l'image en carrés de 2x2 pixels.
     """
+
+    global source
     
     squares = [
         [(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)]
@@ -71,6 +75,8 @@ def checkSquare(square:list,targetColor:int) -> bool:
         Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
     """
     
+    global source
+
     return sum(source.getpixel(square[i])[targetColor]%2 for i in range(4)) == 2
 
 def setSquareColor(square:list,expectedValue:bool,targetColor:int):
@@ -81,6 +87,8 @@ def setSquareColor(square:list,expectedValue:bool,targetColor:int):
         
         Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
     """
+
+    global source
     
     actualValue = checkSquare(square,targetColor)
     
@@ -159,25 +167,30 @@ def setCube(square:list,expectedValue:bool):
             print(bool(fictiveValue[i]),"iter",i)
             setSquareColor(square,bool(fictiveValue[i]),i)
 
+def encryptMessage(message:list,sourcePath:str):
+
+    global source
+
+    squares = getSquare()
+    source = Image.open(sourcePath)
+
+    for i,boolean in enumerate(message):
+
+        setCube(squares[i],bool(boolean))
 
 
 
 
+# for i in range(10):
 
-source = Image.open("SquareDilution/farouk.jpeg")
+#     print("START | ", checkCube(squares[i]), ":", squares[i])
 
-squares = getSquare()
+# for i,boolean in enumerate([True,False,True,False,True,False,True,False,True,False]):
+#     setCube(squares[i],boolean)
+#     print(i,"Iteration",squares[i],"\n       then",squares[i+1],"\n")
 
-for i in range(10):
+# for i in range(10):
 
-    print("START | ", checkCube(squares[i]), ":", squares[i])
-
-for i,boolean in enumerate([True,False,True,False,True,False,True,False,True,False]):
-    setCube(squares[i],boolean)
-    print(i,"Iteration",squares[i],"\n       then",squares[i+1],"\n")
-
-for i in range(10):
-
-    print("END | ", checkCube(squares[i]), ":", squares[i])
+#     print("END | ", checkCube(squares[i]), ":", squares[i])
 
 
