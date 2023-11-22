@@ -98,7 +98,7 @@ class cubeImage():
                 
                 self.incrementRandomPixel(self.incrementRandomPixel(square,targetColor),targetColor)
 
-    def checkBoard(square:list) -> bool:
+    def checkBoard(self,square:list) -> bool:
         """
             Si les deux coordonnées sont paires, retourne True si c'est le cas
             
@@ -123,7 +123,7 @@ class cubeImage():
         
         return (actualCubeValue + (1 - self.checkBoard(square)))%2
 
-    def setCube(self,square:list,expectedValue:bool):
+    def setCube(self,square:list,expectedValue:bool,printOutput:bool=False):
         """
             Vérifie la valeur d'un square, en prenant en compte toutes les couleurs, et inverse en fonction du board
             
@@ -144,42 +144,61 @@ class cubeImage():
                 
                 fictiveValue[random.randint(0,2)] += 1
             
-            print("SQUARRRREL",square,": [",fictiveValue,"]",expectedValue != self.checkBoard(square))
-
+            # print("SQUARRRREL",square,": [",fictiveValue,"]",expectedValue != self.checkBoard(square))
+            
             if expectedValue != self.checkBoard(square):
                 
                 # Inverse les booléens
-                fictiveValue = map(lambda x: not x,fictiveValue)
-                print(fictiveValue,"DA FICTIVE VALUE")
+                fictiveValue = list(map(lambda x: not x,fictiveValue))
+                # print(fictiveValue,"DA FICTIVE VALUE")
             
             for i in range(3):
                 
-                print(bool(fictiveValue[i]),"iter",i)
+                # print(bool(fictiveValue[i]),"iter",i)
                 self.setSquareColor(square,bool(fictiveValue[i]),i)
 
-    def __init__(self, sourcePath:str):
+            if printOutput:
 
+                print(f"[{fictiveValue}]")
+
+        if printOutput:
+
+            print(f"{int(expectedValue)},{actualValue}: {self.checkCube(square)}")
+    
+    def __init__(self, sourcePath:str):
+        
         self.source = Image.open(sourcePath)
         self.squares = self.getSquares()
-
-        self.message = ""
         
+        self.message = ""
+    
     def encrypt(self,message:str):
-
+        
         messageInstruction = ohoui.translateBinary(message)
 
-        for i,instruction in enumerate(messageInstruction):
-
-            self.setCube(self.squares[i],instruction)
-
+        for i, (square, instruction) in enumerate(zip(self.squares,messageInstruction)):
+            
+            self.setCube(square,instruction,i<32)
+    
+    def decrypt(self):
+        
+        binaryList = [self.checkCube(square) for square in self.squares]
+        
+        decryptedMessage = ohoui.translateAlphabetical(binaryList)
+        
+        return decryptedMessage
 
 def encryptMessage(message:list,sourcePath:str):
 
     image = cubeImage(sourcePath)
     image.encrypt(message)
-    image.source.save("kenan.jpg")
+    image.source.save("SquareDilution/kenan.jpeg")
 
+def decryptMessage(sourcePath:str) -> str:
 
+    image = cubeImage(sourcePath)
+    message = image.decrypt()
+    return message
 
 
 # for i in range(10):
