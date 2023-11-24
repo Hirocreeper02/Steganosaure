@@ -59,7 +59,7 @@ class cubeImage():
         ]
         
         return squares
-
+    
     def checkSquare(self,square:list,targetColor:int) -> bool:
         """
             Vérifie si un carré a un nombre égal de valeurs paires et impaires sur la couleur souhaitée
@@ -68,9 +68,9 @@ class cubeImage():
             
             Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
         """
-
+        
         return sum(self.source.getpixel(square[i])[targetColor]%2 for i in range(4)) == 2
-
+    
     def setSquareColor(self,square:list,expectedValue:bool,targetColor:int):
         """
             Change la valeur d'un carré à la valeur voulue
@@ -100,7 +100,7 @@ class cubeImage():
 
     def checkBoard(self,square:list) -> bool:
         """
-            Si les deux coordonnées sont paires, retourne True si c'est le cas
+            Si les deux coordonnées sont paires, retourne True
             
             ==============================
             

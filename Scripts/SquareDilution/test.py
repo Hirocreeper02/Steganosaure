@@ -237,23 +237,23 @@
 #     print(testString.count("0"),";",testString.count("1"),":",testString.count("0")/testString.count("1"))
 
 
-binaryList = [True,False,True,False,False,False,True,True,False,False,True,True,False,True,False,False]
+# binaryList = [True,False,True,False,False,False,True,True,False,False,True,True,False,True,False,False]
 
-binaryList = [binaryList[i:i+8] for i in range(0, len(binaryList), 8)]
+# binaryList = [binaryList[i:i+8] for i in range(0, len(binaryList), 8)]
 
-for i,binary in enumerate(binaryList):
+# for i,binary in enumerate(binaryList):
 
-    print(binary[-1])
+#     print(binary[-1])
 
-    if binary[-1] == False:
+#     if binary[-1] == False:
 
-        print("Condition understood")
-        binaryList.pop(i)
+#         print("Condition understood")
+#         binaryList.pop(i)
     
-    else:
+#     else:
         
-        binaryList[i] = binaryList[i][:8]
+#         binaryList[i] = binaryList[i][:8]
 
-binaryList = [element for sublist in binaryList for element in sublist]
+# binaryList = [element for sublist in binaryList for element in sublist]
 
-print(binaryList)
+# print(binaryList)
