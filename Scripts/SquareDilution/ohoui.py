@@ -58,11 +58,16 @@ def translateAlphabetical(binaryList:list) -> str:
 
     return message
 
-# print(translateAlphabetical(translateBinary("Hi bro! How are you today? Does this code really work? (I think it doesn't, but I let you decide)")))
+#print(translateAlphabetical(translateBinary("Hi bro! How are you today? Does this code really work? (I think it doesn't, but I let you decide)")))
 
-print(translateAlphabetical([False,True,False,True,True,True,False,True,False,True,True,False,False,True,True,True,False,False,False,True]))
+#print(translateAlphabetical([False,True,False,True,True,True,False,True,False,True,True,False,False,True,True,True,False,False,False,True]))
 
 
 #                                                                                                                               111010110010001000111000101 01001
 
-print(translateAlphabetical([True,True,True,False,True,False,True,True,False,False,True,False,False,False,True,False,False,False,True,True,True,False,False,False,True,False,True,False,True,False,False,True]))
+#print(translateAlphabetical([True,True,True,False,True,False,True,True,False,False,True,False,False,False,True,False,False,False,True,True,True,False,False,False,True,False,True,False,True,False,False,True]))
+
+
+
+
+

@@ -188,17 +188,26 @@ class cubeImage():
         
         return decryptedMessage
 
-def encryptMessage(message:list,sourcePath:str):
+def encryptMessage(message:list,sourcePath:str,returnpath:str):
 
     image = cubeImage(sourcePath)
     image.encrypt(message)
-    image.source.save("SquareDilution/kenan.jpeg")
+    image.source.save(returnpath)
 
 def decryptMessage(sourcePath:str) -> str:
 
     image = cubeImage(sourcePath)
     message = image.decrypt()
     return message
+
+listeencrypte = [1,1,1,1,0,0,0,0]
+encryptMessage(listeencrypte,"/Users/nils/projets/Steganosaure/Scripts/SquareDilution/farouk.jpeg","/Users/nils/projets/Steganosaure/Scripts/SquareDilution/kenan.jpeg")
+print(decryptMessage("/Users/nils/projets/Steganosaure/Scripts/SquareDilution/kenan.jpeg"))
+
+
+
+
+
 
 
 # for i in range(10):

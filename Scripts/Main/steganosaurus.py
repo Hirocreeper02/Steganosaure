@@ -1,18 +1,16 @@
-
-# checher methode python path commune
-
-import sys
 import os
+import sys
 
-sys.path.append('SquareDilution/')
+#base_directory stock le chemin relatif jusqu'a Scripts
+base_directory = os.getcwd()+"/Scripts"
 
-import cubeDilution
+# permet d'importer le fichier cubeDilution
+pathcubeDilution = os.path.join(base_directory, 'SquareDilution')
+sys.path.append(pathcubeDilution)
+import cubeDilution as cubeD
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
 
-with open(os.path.join(current_dir, 'input.txt')) as inputText:
-
-    cubeDilution.encryptMessage("Hello the world","SquareDilution/farouk.jpeg")
-    print("AND THE MESSAGE IS:",cubeDilution.decryptMessage("SquareDilution/kenan.jpeg"))
+cubeD.encryptMessage("Hello the world",os.path.join(base_directory, 'SquareDilution', "farouk.jpeg"),os.path.join(base_directory, 'SquareDilution', "kenan.jpeg"))
+print("AND THE MESSAGE IS:",cubeD.decryptMessage(os.path.join(base_directory, 'SquareDilution', "kenan.jpeg")))
 
 

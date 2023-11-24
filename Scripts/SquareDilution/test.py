@@ -1,5 +1,6 @@
 # from math import * # de david
 # import random
+import os
 
 # characteres = [
 #     "/",
@@ -257,3 +258,10 @@
 # binaryList = [element for sublist in binaryList for element in sublist]
 
 # print(binaryList)
+
+
+base_directory = os.getcwd()
+print(base_directory)
+data_folder_path = os.path.join(base_directory, 'colorDistinction')
+print(data_folder_path)
+
