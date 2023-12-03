@@ -11,6 +11,10 @@ import ohoui
 
 class cubeImage():
 
+    listeactual = []
+
+    listecontole = []
+
     ### METHODS ###
 
     def incrementColor(self,pixelColors:list,targetColor:int):
@@ -35,7 +39,6 @@ class cubeImage():
         On met un pixel à une coordonnée aléatoire dont incrémente à la couleur voulue
         """
         
-        # print("LEN SQUARE",len(square),square)
         randomCoord = random.choice(square)
         
         self.source.putpixel(randomCoord,tuple(self.incrementColor(list(self.source.getpixel(randomCoord)),targetColor)))
@@ -87,7 +90,7 @@ class cubeImage():
             if expectedValue == False:
                 
                 self.incrementRandomPixel(square,targetColor)
-            
+
             else: # expectedValue == True
                 
                 for coord in square:
@@ -95,8 +98,10 @@ class cubeImage():
                     pixelColor = list(self.source.getpixel(coord))
                     pixelColor[targetColor] -= pixelColor[targetColor]%2
                     self.source.putpixel(coord,tuple(pixelColor))
-                
+
                 self.incrementRandomPixel(self.incrementRandomPixel(square,targetColor),targetColor)
+
+
 
     def checkBoard(self,square:list) -> bool:
         """
@@ -105,9 +110,10 @@ class cubeImage():
             ==============================
             
             Regarde si l'addition des deux coordonnées modulo 2 donne 0 (Sinon donnerait 1 ou 2)
+
         """
-        
-        return sum((square[0][i]/2)%2 for i in range(2))%2 == 0
+
+        return ((square[0][0]/2)%2+(square[0][1]/2)%2)%2
 
     def checkCube(self,square:list) -> bool:
         """
@@ -119,11 +125,11 @@ class cubeImage():
             Puis applique les modifications d'inversion en fonction du checker board.
         """
         
-        actualCubeValue = sum(self.checkSquare(square, i) for i in range(3)) <= 2
+        actualCubeValue = sum(self.checkSquare(square, i) for i in range(3)) <= 1
         
-        return (actualCubeValue + (1 - self.checkBoard(square)))%2
+        return (actualCubeValue + (1 + self.checkBoard(square)))%2
 
-    def setCube(self,square:list,expectedValue:bool,printOutput:bool=False):
+    def setCube(self,square:list,expectedValue:bool):
         """
             Vérifie la valeur d'un square, en prenant en compte toutes les couleurs, et inverse en fonction du board
             
@@ -134,36 +140,25 @@ class cubeImage():
         """
         
         actualValue = self.checkCube(square)
-        
+
         if actualValue != expectedValue:
             
             fictiveValue = [0,0,0]
             
             # Change un élément random pour ajouter du SWAG
-            if random.randint(0,100) <= 70: #%
+            if random.randint(0,99) <= 69: #%
                 
                 fictiveValue[random.randint(0,2)] += 1
             
-            # print("SQUARRRREL",square,": [",fictiveValue,"]",expectedValue != self.checkBoard(square))
-            
             if expectedValue != self.checkBoard(square):
-                
+
                 # Inverse les booléens
                 fictiveValue = list(map(lambda x: not x,fictiveValue))
-                # print(fictiveValue,"DA FICTIVE VALUE")
             
             for i in range(3):
                 
-                # print(bool(fictiveValue[i]),"iter",i)
                 self.setSquareColor(square,bool(fictiveValue[i]),i)
 
-            if printOutput:
-
-                print(f"[{fictiveValue}]")
-
-        if printOutput:
-
-            print(f"{int(expectedValue)},{actualValue}: {self.checkCube(square)}")
     
     def __init__(self, sourcePath:str):
         
@@ -178,7 +173,8 @@ class cubeImage():
 
         for i, (square, instruction) in enumerate(zip(self.squares,messageInstruction)):
             
-            self.setCube(square,instruction,i<32)
+            self.setCube(square,instruction)
+
     
     def decrypt(self):
         
@@ -188,11 +184,12 @@ class cubeImage():
         
         return decryptedMessage
 
-def encryptMessage(message:list,sourcePath:str,returnpath:str):
+def encryptMessage(message:str,sourcePath:str,returnpath:str):
 
     image = cubeImage(sourcePath)
     image.encrypt(message)
     image.source.save(returnpath)
+    
 
 def decryptMessage(sourcePath:str) -> str:
 
@@ -200,26 +197,11 @@ def decryptMessage(sourcePath:str) -> str:
     message = image.decrypt()
     return message
 
-listeencrypte = [1,1,1,1,0,0,0,0]
-encryptMessage(listeencrypte,"/Users/nils/projets/Steganosaure/Scripts/SquareDilution/farouk.jpeg","/Users/nils/projets/Steganosaure/Scripts/SquareDilution/kenan.jpeg")
-print(decryptMessage("/Users/nils/projets/Steganosaure/Scripts/SquareDilution/kenan.jpeg"))
 
 
 
 
 
 
-
-# for i in range(10):
-
-#     print("START | ", checkCube(squares[i]), ":", squares[i])
-
-# for i,boolean in enumerate([True,False,True,False,True,False,True,False,True,False]):
-#     setCube(squares[i],boolean)
-#     print(i,"Iteration",squares[i],"\n       then",squares[i+1],"\n")
-
-# for i in range(10):
-
-#     print("END | ", checkCube(squares[i]), ":", squares[i])
 
 

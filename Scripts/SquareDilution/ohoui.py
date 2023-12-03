@@ -22,7 +22,7 @@ def translateBinary(message:str) -> list:
             # print(boolList)
 
             binaryList.extend(
-                bool(int(boolean)) for boolean in f"{OHOUIIIIIIIIIIII[char]}1"
+                int(boolean) for boolean in f"{OHOUIIIIIIIIIIII[char]}1"
             )
 
     return binaryList
@@ -31,7 +31,7 @@ def translateAlphabetical(binaryList:list) -> str:
     
     # On subdivise la liste en tronçons de 8
     binaryList = [binaryList[i:i+8] for i in range(0, len(binaryList), 8)]
-    print("LEN AVANT",len(binaryList))
+    #print("LEN AVANT",len(binaryList))
 
     for i,binary in enumerate(binaryList):
         
@@ -43,7 +43,7 @@ def translateAlphabetical(binaryList:list) -> str:
             
         #     binaryList[i] = binaryList[i][:7]
 
-    print("LEN APRES",len(binaryList))
+    #print("LEN APRES",len(binaryList))
     
     message = ""
     
@@ -58,7 +58,9 @@ def translateAlphabetical(binaryList:list) -> str:
 
     return message
 
-#print(translateAlphabetical(translateBinary("Hi bro! How are you today? Does this code really work? (I think it doesn't, but I let you decide)")))
+#a = (translateBinary("Hi bro! How are you today? Does this code really work? (I think it doesn't, but I let you decide)"))
+
+#print(a,translateAlphabetical(a))
 
 #print(translateAlphabetical([False,True,False,True,True,True,False,True,False,True,True,False,False,True,True,True,False,False,False,True]))
 

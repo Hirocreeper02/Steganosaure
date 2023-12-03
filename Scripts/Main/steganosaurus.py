@@ -10,7 +10,24 @@ sys.path.append(pathcubeDilution)
 import cubeDilution as cubeD
 
 
-cubeD.encryptMessage("Hello the world",os.path.join(base_directory, 'SquareDilution', "farouk.jpeg"),os.path.join(base_directory, 'SquareDilution', "kenan.jpeg"))
-print("AND THE MESSAGE IS:",cubeD.decryptMessage(os.path.join(base_directory, 'SquareDilution', "kenan.jpeg")))
+cubeD.encryptMessage("Hello world !!! je vais bien blabla",os.path.join(base_directory, 'SquareDilution', "farouk.jpeg"),os.path.join(base_directory, 'SquareDilution', "kenan.png"))
+
+messagedecoder = cubeD.decryptMessage(os.path.join(base_directory, 'SquareDilution', "kenan.png"))
+print("AND THE MESSAGE IS:",messagedecoder)
+
+output = "76:càd§ÇgNM#Ncc"
+for char1, char2 in zip("Hello world !!!", output):
+    bin1 = list(cubeD.ohoui.OHOUIIIIIIIIIIII[char1])
+    bin2 = list(cubeD.ohoui.OHOUIIIIIIIIIIII[char2])
+    comparatif = ""
+    for c1, c2 in zip(bin1, bin2):
+
+        if int(c1) ^ int(c2) == 0:
+            comparatif += " "
+        else:
+            comparatif += "1"
+
+    #print("".join(bin1), ";", "".join(bin2), "->", comparatif)
+
 
 
