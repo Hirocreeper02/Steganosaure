@@ -2,7 +2,8 @@ import os
 import sys
 
 #base_directory stock le chemin relatif jusqu'a Scripts
-base_directory = os.getcwd()+"/Scripts"
+#base_directory = f"{os.getcwd()}/Scripts"
+base_directory = os.getcwd() # Perso ça marche mieux
 
 # permet d'importer le fichier cubeDilution
 pathcubeDilution = os.path.join(base_directory, 'SquareDilution')
