@@ -9,6 +9,13 @@ import random
 
 import ohoui
 
+import os
+import sys
+base_directory = os.getcwd()
+pathColorDistinction = os.path.join(base_directory, 'ColorDistinction')
+sys.path.append(pathColorDistinction)
+import colorDistinction
+
 class cubeImage():
 
     listeactual = []
@@ -184,19 +191,39 @@ class cubeImage():
         
         return decryptedMessage
 
-def encryptMessage(message:str,sourcePath:str,returnpath:str):
+
+def tempGetSquaresMoche(squareCoords:list):
+    
+    squares = [
+        [(pos[0], pos[1]), (pos[0] + 1, pos[1]), (pos[0], pos[1] + 1), (pos[0] + 1, pos[1] + 1)]
+        for pos  in squareCoords
+    ]
+    
+    return squares
+
+def encryptMessage(message:str,sourcePath:str,returnpath:str,colorGradient:bool = False):
 
     image = cubeImage(sourcePath)
+    if colorGradient:
+        result = colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(),lengthOfMessage = 8 * len(message))
+        image.squares = tempGetSquaresMoche(sorted(list(result[0]), key=lambda x: (x[0], x[1])))
+    print(image.squares)
     image.encrypt(message)
     image.source.save(returnpath)
     
+    if colorGradient:
+        print("RESULTS",result[1],result[2])
+        return result[1],result[2]
 
-def decryptMessage(sourcePath:str) -> str:
+def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) -> str:
 
     image = cubeImage(sourcePath)
+    
+    if colorPick and tolerance:
+        image.squares = tempGetSquaresMoche(sorted(list(colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(), targetColor = colorPick, tolerance = tolerance)[0]), key=lambda x: (x[0], x[1])))
+    
     message = image.decrypt()
     return message
-
 
 
 

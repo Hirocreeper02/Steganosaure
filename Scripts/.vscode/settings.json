@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./SquareDilution"
+        "./SquareDilution",
+        "./ColorDistinction"
     ]
 }
