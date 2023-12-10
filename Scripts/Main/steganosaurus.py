@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 
 #base_directory stock le chemin relatif jusqu'a Scripts
 #base_directory = f"{os.getcwd()}/Scripts"
@@ -20,11 +21,28 @@ import cubeDilution as cubeD
 
 # COLOR TEST #
 
-targetColor,tolerance = cubeD.encryptMessage("Hello world !!! je vais bien blabla",os.path.join(base_directory, 'SquareDilution', "farouk.jpeg"),os.path.join(base_directory, 'SquareDilution', "kenan.png"),True)
 
-messageDecoder = cubeD.decryptMessage(os.path.join(base_directory, 'SquareDilution', "kenan.png"),targetColor,tolerance)
+# with open(os.path.join(base_directory, 'Main', "input.txt")) as textInput:
+#     text = "".join(textInput.readlines())
+#     print(len(text))
+
+firstTime = time.time()
+
+targetColor,tolerance = cubeD.encryptMessage("Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple.Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple. Cette phrase sert à montrer un exemple.",os.path.join(base_directory, 'ColorDistinction', "bus_go_brrr.jpg"),os.path.join(base_directory, 'SquareDilution', "kenan.png"))
+
+# x/100 + 12 = nb de secondes d'éxécution python
+# x/10000 + 12 =? nb de secondes d'éxécution C?
+
+secondTime = time.time()
+
+# messageDecoder = cubeD.decryptMessage(os.path.join(base_directory, 'SquareDilution', "kenan.png"),targetColor,tolerance)
+messageDecoder = cubeD.decryptMessage(os.path.join(base_directory, 'SquareDilution', "kenan.png"))
+
+thirdTime = time.time()
 
 print(messageDecoder)
+
+print(f"ENCRYPTION: {secondTime-firstTime} s\nDECRYPTION: {thirdTime-secondTime} s")
 
 # output = "76:càd§ÇgNM#Ncc"
 # for char1, char2 in zip("Hello world !!!", output):

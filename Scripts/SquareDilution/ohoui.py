@@ -69,7 +69,7 @@ def translateAlphabetical(binaryList:list) -> str:
 
 #print(translateAlphabetical([True,True,True,False,True,False,True,True,False,False,True,False,False,False,True,False,False,False,True,True,True,False,False,False,True,False,True,False,True,False,False,True]))
 
-
+print(translateBinary("ABC"))
 
 
 
