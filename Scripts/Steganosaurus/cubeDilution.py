@@ -70,7 +70,7 @@ class cubeImage():
             Si la valeur dépasse 255, on soustrait 1 au lieu d'ajouter 1
         """
         
-        pixelColors[targetColor] += 1 * -(pixelColors[targetColor]>=255)
+        pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
         
         return pixelColors
     
@@ -122,7 +122,7 @@ class cubeImage():
             Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
         """
         
-        return sum(self.source.getpixel(pixel)[targetColor]%2 for pixel in square) == 2 
+        return int(sum(self.source.getpixel(pixel)[targetColor]%2 for pixel in square) == 2)
     
     def _checkCube(self,square:list) -> bool:
         """
@@ -136,7 +136,7 @@ class cubeImage():
             Puis applique les modifications d'inversion en fonction du checker board.
         """
         
-        return sum(self._checkSquare(square, i) for i in range(3)) <= 1
+        return int(sum(self._checkSquare(square, i) for i in range(3)) >= 2)
     
     def _setSquare(self,square:list,expectedValue:int,targetColor:int,actualValue:list = None):
         """
@@ -149,7 +149,7 @@ class cubeImage():
             Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
         """
         
-        if not actualValue:
+        if actualValue is None: # Si la valeur actual est nulle
             
             actualValue = self._checkSquare(square, targetColor) # On transfère actual value en temps normal, pour éviter les doubles calculs
         
@@ -200,7 +200,7 @@ class cubeImage():
         for i,value in enumerate(transformValue):
             
             self._setSquare(square,value,i,actualValue[i])
-
+    
     #############################
     ### FONCTIONS UTILISATEUR ###
     #############################
@@ -249,7 +249,6 @@ def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool 
     if colorGradient:
         result = colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(),lengthOfMessage = 8 * len(message))
         image.squares = tempGetSquaresMoche(sorted(list(result[0]), key=lambda x: (x[0], x[1])))
-    #print(image.squares)
     image.encrypt(message)
     image.source.save(returnPath)
     
@@ -266,3 +265,4 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     
     message = image.decrypt()
     return message
+
