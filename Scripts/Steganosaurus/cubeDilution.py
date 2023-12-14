@@ -1,4 +1,4 @@
-import itertools
+from itertools import *
 import random
 
 from PIL import Image
@@ -58,12 +58,16 @@ class cubeImage():
     ### METHODES ###
     ################
     
-
+    
     def _incrementColor(self,pixelColors:list,targetColor:int):
         """
-            [INTERNE]
+            [PRIVEE]
             
-            Incrémente de 1 la valeur de la couleur ciblée, afin d'éviter une valeur RGB > 255
+            ==============================
+            
+            informations du pixel [list[int]]; couleur ciblée [int in [0,2]]
+            
+            -> incrémente de 1 la couleur ciblée (cas RGB > 255 compris)
             
             ==============================
             
@@ -76,9 +80,13 @@ class cubeImage():
     
     def _incrementRandomPixel(self,square:list,targetColor:int) -> list:
         """
-            [INTERNE]
+            [PRIVEE]
             
-            Rend un pixel aléatoire de square impair (et retourne le square sans ce pixel)
+            ==============================
+            
+            square ciblé; couleur ciblée
+            
+            -> incrémente de 1 un pixel aléatoire de la couleur ciblée du square; retourne le square sans ce pixel
             
             ==============================
             
@@ -95,12 +103,13 @@ class cubeImage():
     
     def _getSquares(self) -> list:
         """
+            [PRIVEE]
             Divise l'image en carrés de 2x2 pixels.
         """
         
         squares = [
             [(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)]
-            for y, x  in itertools.product(
+            for y, x  in product(
                 range(0, self.source.width, 2), range(0, self.source.height, 2)
             )
         ]
@@ -113,39 +122,39 @@ class cubeImage():
     
     def _checkSquare(self,square:list,targetColor:int) -> bool:
         """
-            [INTERNE]
+            [PRIVATE]
             
-            Vérifie si un carré a un nombre égal de valeurs paires et impaires sur la couleur souhaitée
+            Verifies if a square has an equal number of even and uneven values on the targeted color
             
             ==============================
             
-            Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
+            Foreach one of the four pixels, we add 1 if the targeted value is uneven, otherwhise 0, and then we verify that the sum of the values is really 2
         """
         
         return int(sum(self.source.getpixel(pixel)[targetColor]%2 for pixel in square) == 2)
     
     def _checkCube(self,square:list) -> bool:
         """
-            [INTERNE]
+            [PRIVATE]
             
-            Vérifie la valeur d'un square, en prenant en compte toutes les couleurs, et inverse en fonction du board
+            Checks the value of a square, taking into aconsideratiion the three color layers
             
             ==============================
             
-            Additionne les bool de chaque couleur checkSquare et la bool du square sera équivalent à la majorité de bool des couleurs (T,T,F) -> T
-            Puis applique les modifications d'inversion en fonction du checker board.
+            Adds up the bools of each color (r,g,b) in checkSquare, and the result of the three layers will be the majority of bools of the layers (T,T,F) -> T
         """
         
         return int(sum(self._checkSquare(square, i) for i in range(3)) >= 2)
     
     def _setSquare(self,square:list,expectedValue:int,targetColor:int,actualValue:list = None):
         """
-            [INTERNE]
+            [PRIVATE]
             
-            Change la valeur d'un carré à la valeur voulue
+            Changes the value of a square to the desired one
             
             ==============================
             
+            For each one of the four pixels, we
             Pour chacun des quatres pixels, on additionne 1 si la couleur ciblée à une valeur impaire, sinon 0, et ensuite on vérifie si il y a bien deux nombres impairs et deux nombre pairs
         """
         
@@ -161,14 +170,15 @@ class cubeImage():
             
             else: # expectedValue == True
                 
-                pixelValues = [list(self.source.getpixel(pixel)) for pixel in square]
+                # Sortie de tuples (sous forme liste)
+                pixelValues = [list(self.source.getpixel(pixel)) for pixel in square] 
                 transformPixelValues = [value[targetColor]%2 for value in pixelValues]
                 
                 pixelCount = transformPixelValues.count(1)
                 
                 while pixelCount != 2:
                     
-                    transformPixelValues[random.randint(0,2)] = (pixelCount < 2)
+                    transformPixelValues[random.randint(0,2)] = (pixelCount < 2) # Nils peut optimiser
                     pixelCount = transformPixelValues.count(1)
                 
                 for i,(transformColor,actualColor) in enumerate(zip(transformPixelValues,pixelValues)):
@@ -181,7 +191,7 @@ class cubeImage():
     
     def _setCube(self,square:list,expectedValue:bool):
         """
-            [INTERNE]
+            [PRIVEE]
             
             Vérifie la valeur d'un square, en prenant en compte toutes les couleurs, et inverse en fonction du board
             
@@ -195,7 +205,7 @@ class cubeImage():
         transformValue = actualValue.copy()
         
         while transformValue.count(int(expectedValue)) < 2:
-            transformValue[random.randint(0,2)] = int(expectedValue)
+            transformValue[random.randint(0,2)] = int(expectedValue) # Peut optimiser par recherche de 0 [NILS]
         
         for i,value in enumerate(transformValue):
             
@@ -265,4 +275,3 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     
     message = image.decrypt()
     return message
-

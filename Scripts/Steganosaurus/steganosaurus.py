@@ -32,7 +32,7 @@ def massTimeTesting(numberOfTests:int,step:int = 1):
 
                 resultFile.write(f"[{test}]LEN {iteration}: {secondTime-firstTime} s; {thirdTime-secondTime} s; {thirdTime-firstTime}\n")
 
-massTimeTesting(1000000,100000)
+massTimeTesting(100,10)
 
 
 
