@@ -37,6 +37,12 @@ Steanosaurus Rex
  ## Mode d'emploi
  
  
- ## CubeDilution
+ ## Algorithmes
+ 
+ 
+ ### CubeDilution
  Cette première méthode est celle qui se base sur les valeurs des pixels.
- On commence donc par séparer l'image en carrés de 2x2, pour chacun de ces carrés on calcule le modulo 2 de chacun des pixels pour une couleur bien spécifique. Si l'on a le même nombre de modulos égaux à 0 que de modulos égaux à 1, alors on attribue à la couleur que l'on considère la valeur **True**
+ On commence donc par séparer l'image en carrés de 2x2, pour chacun de ces carrés on calcule le modulo 2 de chacun des pixels pour une couleur bien spécifique. Si l'on a le même nombre de modulos égaux à 0 que de modulos égaux à 1, alors on attribue à la couleur que l'on considère la valeur **True**, sinon **False**, puis en bouclant sur les trois couleurs du système RGB, on refait quelque chose de similaire en prenant la majorité des valeurs booléennes que l'on a attribuées à chacune des couleurs.
+ 
+ ### ColorDistinction
+ Celle ci consiste à choisir au hasard une couleur de départ parmi toutes celles présentes dans l'image puis de déterminer l'intervalle sur les valeurs RGB des couleurs qui permet d'obtenir suffisamment d'espace pour encrypter tout le message fourni par l'utilisateur. Il s'agit ensuite d'utiliser les méthodes de l'algorithme précédent pour modifier les valeurs de quelques pixels et de donc stocker les informations qui nous seront nécessaires, mais donc uniquement dans les pixels/squares déterminés à la première étape avec l'intervalle.
