@@ -82,25 +82,23 @@ class TestCubeImage(unittest.TestCase):
 
     def setUp(self):
 
-        self.imageFarouk = cubeDilution.cubeImage(pathFarouk)
+        self.Farouk = cubeDilution.cubeImage(pathFarouk)
 
-        self.squares = self.imageFarouk._getSquares()
+        self.squares = self.Farouk._getSquares()
 
     #    self.imageorigine = PIL.Image.open(os.path.join(base_directory,"kenan.jpeg"))
 
-    #    self.imagecrypter = PIL.Image.open(pathFarouk)
-        
-
+        self.imageFarouk = PIL.Image.open(pathFarouk)
 
     def test_getSquares(self):
 
         self.assertIsInstance(self.squares, list)
 
-        for i in enumerate(self.squares):
+        for i, square in enumerate(self.squares):
 
-            self.assertEqual(self.squares[i][0]%2,0)
+            self.assertEqual(self.squares[i][0][0] % 2, 0)
 
-            self.assertEqual(self.squares[i][2]%2,1)
+            self.assertEqual(self.squares[i][3][0] % 2, 1)
 
 
     def test_incrementColor(self):
@@ -108,7 +106,7 @@ class TestCubeImage(unittest.TestCase):
         valeurTest = [53,0,255]
 
         for i in range(3):
-            valeurTest = self.imageFarouk._incrementColor(valeurTest,i)
+            valeurTest = self.Farouk._incrementColor(valeurTest,i)
             
 
         self.assertIsInstance(valeurTest, list)
@@ -121,7 +119,50 @@ class TestCubeImage(unittest.TestCase):
 
 
     def test_incrementRandomPixel(self):
-        pass
+
+        squareColor = []
+
+        squareColorMod = []
+
+        for i,square in enumerate(self.squares[0]):
+
+            squareColor.append(self.imageFarouk.getpixel((self.squares[0][i])))
+
+        listeReste = self.Farouk._incrementRandomPixel(self.squares[0],0)
+
+        for i,square in enumerate(self.squares[0]):
+
+            squareColorMod.append(self.imageFarouk.getpixel((self.squares[0][i])))
+
+        self.assertIsInstance(listeReste, list)
+
+        self.assertEqual(len(listeReste), 3)
+
+        #print(self.squares[0],listeReste)
+        a = int(str(set(self.squares[0]) - set(listeReste))[2])
+
+        b = int(str(set(self.squares[0]) - set(listeReste))[-3])
+
+        f = (a,b)
+
+        print(squareColor, squareColorMod)
+
+        #print((self.imageFarouk.getpixel(f)[0]+1,self.imageFarouk.getpixel(f)[1],self.imageFarouk.getpixel(f)[2]),squareColorMod)
+
+        #self.assertIn(self.imageFarouk.getpixel(f)[0]+1, squareColorMod)
+
+
+
+
+
+
+
+
+
+
+
+        
+
 
 
 

@@ -265,3 +265,10 @@ print(base_directory)
 data_folder_path = os.path.join(base_directory, 'colorDistinction')
 print(data_folder_path)
 
+
+
+liste1 = [0,1,2,3]
+
+liste2 = [0,1,2]
+
+print(list(set(liste1) - set(liste2)))
