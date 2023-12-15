@@ -13,3 +13,6 @@ voisins = {
                     range(-1,2,2), range(2), range(2), range(2)
                 )
             }
+
+
+print(type(tuple([1,2])))

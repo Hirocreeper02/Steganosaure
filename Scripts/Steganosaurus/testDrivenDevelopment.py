@@ -6,9 +6,11 @@ import cubeDilution
 
 # chemin de base du dossier
 base_directory = os.getcwd()
+pathFarouk = os.path.join(base_directory,"farouk.png")
+pathKenan = os.path.join(base_directory,"kenan.jpeg")
 
 
-class TestAlphabet(unittest.TestCase):
+class TestCodeAndCrypte(unittest.TestCase):
 
 
 
@@ -20,9 +22,9 @@ class TestAlphabet(unittest.TestCase):
 
         self.message_decoder = cubeDilution.translateAlphabetical(self.message_coder)
 
-        cubeDilution.encryptMessage(self.message,os.path.join(base_directory,"kenan.jpeg"),os.path.join(base_directory,"farouk.png"))
+        cubeDilution.encryptMessage(self.message,pathKenan,pathFarouk)
 
-        self.message_decrypter = cubeDilution.decryptMessage(os.path.join(base_directory,"farouk.png"))
+        self.message_decrypter = cubeDilution.decryptMessage(pathFarouk)
 
 
 
@@ -46,10 +48,10 @@ class TestAlphabet(unittest.TestCase):
 
     def test_encryptMessage(self):
 
-        self.assertTrue(os.path.join(base_directory,"farouk.png"))
+        self.assertTrue(pathFarouk)
 
-        image1 = PIL.Image.open(os.path.join(base_directory,"kenan.jpeg"))
-        image2 = PIL.Image.open(os.path.join(base_directory,"farouk.png"))
+        image1 = PIL.Image.open(pathKenan)
+        image2 = PIL.Image.open(pathFarouk)
 
         self.assertEqual(image1.size, image2.size)
 
@@ -74,6 +76,52 @@ class TestAlphabet(unittest.TestCase):
 
 
 
+class TestCubeImage(unittest.TestCase):
+
+
+
+    def setUp(self):
+
+        self.imageFarouk = cubeDilution.cubeImage(pathFarouk)
+
+        self.squares = self.imageFarouk._getSquares()
+
+    #    self.imageorigine = PIL.Image.open(os.path.join(base_directory,"kenan.jpeg"))
+
+    #    self.imagecrypter = PIL.Image.open(pathFarouk)
+        
+
+
+    def test_getSquares(self):
+
+        self.assertIsInstance(self.squares, list)
+
+        for i in enumerate(self.squares):
+
+            self.assertEqual(self.squares[i][0]%2,0)
+
+            self.assertEqual(self.squares[i][2]%2,1)
+
+
+    def test_incrementColor(self):
+
+        valeurTest = [53,0,255]
+
+        for i in range(3):
+            valeurTest = self.imageFarouk._incrementColor(valeurTest,i)
+            
+
+        self.assertIsInstance(valeurTest, list)
+
+        self.assertEqual(valeurTest[0],54)
+
+        self.assertEqual(valeurTest[1],1)
+
+        self.assertEqual(valeurTest[2],254)
+
+
+    def test_incrementRandomPixel(self):
+        pass
 
 
 
