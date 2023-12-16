@@ -9,7 +9,9 @@ class colorMask():
     def __init__(self,source:Image):
         
         self.source = source
+        # self.colorRepartition = self.getColorRepartition()
         self.colorRepartition = self.getColorRepartition()
+        self._actualColorRepartition = {}
         self.colorSet = set()
         self.targetColor = None
         self.tolerance = None 
@@ -39,7 +41,29 @@ class colorMask():
         
         return colorRepartition
     
+    def _customColorRepartition(self,numberOfBits:int) -> dict:
+        
+        repartition = {}
+        
+        n = numberOfBits//10+1
+        
+        for couleur in self.colorRepartition:
+            
+            r,g,b = couleur[0]-couleur[0]%n,couleur[1]-couleur[1]%n,couleur[2]-couleur[2]%n
+            
+            if (r,g,b) not in repartition:
+                
+                repartition[(r,g,b)] = [self.colorRepartition[couleur]]
+            
+            else:
+                
+                repartition[(r,g,b)].append(self.colorRepartition[couleur])
+        
+        return repartition
+    
     def _createRange(self,numberOfBits:int):
+        
+        # _actualColorRepartition = self._customColorRepartition(numberOfBits)
         
         targetColor = random.choice(list(self.colorRepartition))
         tolerance = 0
@@ -103,7 +127,9 @@ class colorMask():
             self._loadRange(targetColor,tolerance)
 
 
-# myMask = colorMask(Image.open("Steganosaurus/jpg_wouhou.png"))
+myMask = colorMask(Image.open("Steganosaurus/bus.jpg"))
+print(len(myMask.colorRepartition))
+print(len(myMask._customColorRepartition(100)))
 # myMask.getColorRange(8)
 
 # print(myMask.colorSet)
