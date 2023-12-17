@@ -41,23 +41,31 @@ class colorMask():
         
         return colorRepartition
     
-    def _customColorRepartition(self,numberOfBits:int) -> dict:
+    def _customColorRepartition(self,targetColor:tuple,numberOfBits:int) -> dict:
         
         repartition = {}
+        roundStep = numberOfBits//10+1
         
-        n = numberOfBits//10+1
-        
-        for couleur in self.colorRepartition:
+        for color in self.colorRepartition:
             
-            r,g,b = couleur[0]-couleur[0]%n,couleur[1]-couleur[1]%n,couleur[2]-couleur[2]%n
+            roundedColor = []
             
-            if (r,g,b) not in repartition:
+            for reference, component in zip(targetColor,color):
                 
-                repartition[(r,g,b)] = [self.colorRepartition[couleur]]
+                result = component - component%roundStep + reference%roundStep
+                result -= roundStep*(result >= component)
+                
+                roundedColor.append(result)
+            
+            roundedColor = tuple(roundedColor)
+            
+            if roundedColor not in repartition:
+                
+                repartition[roundedColor] = [self.colorRepartition[color]]
             
             else:
                 
-                repartition[(r,g,b)].append(self.colorRepartition[couleur])
+                repartition[roundedColor].append(self.colorRepartition[color])
         
         return repartition
     
@@ -129,7 +137,7 @@ class colorMask():
 
 myMask = colorMask(Image.open("Steganosaurus/bus.jpg"))
 print(len(myMask.colorRepartition))
-print(len(myMask._customColorRepartition(100)))
+print(len(myMask._customColorRepartition((245,163,26),100)))
 # myMask.getColorRange(8)
 
 # print(myMask.colorSet)
