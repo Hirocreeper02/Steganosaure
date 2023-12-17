@@ -21,19 +21,23 @@ from itertools import *
 # 5 : 140'608
 # 1 : 
 
-def arrondir(pixel,targetColor,roundStep):
+# def arrondir(pixel,targetColor,roundStep):
     
-    output = []
+#     output = []
     
-    for ref,color in zip(targetColor,pixel):
+#     for ref,color in zip(targetColor,pixel):
         
-        result = color - color%roundStep + ref%roundStep
-        result -= roundStep*(result >= color)
+#         result = color - color%roundStep + ref%roundStep
+#         result -= roundStep*(result >= color)
         
-        output.append(result)
+#         output.append(result)
     
-    return tuple(output)
+#     return tuple(output)
 
-print(arrondir((245, 87, 15),(16,23,42),5))
+# print(arrondir((245, 87, 0),(16,23,42),5))
 
 # (245, 87, 15) => (236, 83, 12)
+
+for i,j,k in product((0,1),(0,1),(0,1)):
+
+    print(i,j,k)

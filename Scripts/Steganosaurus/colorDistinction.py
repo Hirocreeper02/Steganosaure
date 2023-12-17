@@ -11,8 +11,8 @@ class colorMask():
         self.source = source
         # self.colorRepartition = self.getColorRepartition()
         self.colorRepartition = self.getColorRepartition()
-        self._actualColorRepartition = {}
         self.colorSet = set()
+        self.colorPixelSet = {} # Dictionnaire des pixels compris dans le masque
         self.targetColor = None
         self.tolerance = None 
     
@@ -41,23 +41,31 @@ class colorMask():
         
         return colorRepartition
     
-    def _customColorRepartition(self,targetColor:tuple,numberOfBits:int) -> dict:
+    def _getRoundStep(self,numberOfBits:int) -> int:
+        
+        return numberOfBits//10+1
+    
+    def _roundColor(self,pixel:tuple,targetColor:tuple,roundStep:int) -> tuple:
+        
+        roundedColor = []
+        
+        for reference, component in zip(targetColor,pixel):
+            
+            result = component - component%roundStep + reference%roundStep
+            result -= roundStep*(result >= component)
+            
+            roundedColor.append(result)
+        
+        return tuple(roundedColor)
+    
+    def _customColorRepartition(self,targetColor:tuple,roundStep:int) -> dict:
         
         repartition = {}
-        roundStep = numberOfBits//10+1
+        
         
         for color in self.colorRepartition:
             
-            roundedColor = []
-            
-            for reference, component in zip(targetColor,color):
-                
-                result = component - component%roundStep + reference%roundStep
-                result -= roundStep*(result >= component)
-                
-                roundedColor.append(result)
-            
-            roundedColor = tuple(roundedColor)
+            roundedColor = self._roundColor(color,targetColor,roundStep)
             
             if roundedColor not in repartition:
                 
@@ -67,14 +75,17 @@ class colorMask():
                 
                 repartition[roundedColor].append(self.colorRepartition[color])
         
+        print("REPARTIITON:",len(repartition))
+        
         return repartition
     
     def _createRange(self,numberOfBits:int):
         
-        # _actualColorRepartition = self._customColorRepartition(numberOfBits)
-        
         targetColor = random.choice(list(self.colorRepartition))
         tolerance = 0
+        roundStep = self._getRoundStep(numberOfBits)
+
+        actualColorRepartition = self._customColorRepartition(targetColor,roundStep)
         
         colorSet = {targetColor}
         
@@ -82,7 +93,7 @@ class colorMask():
         
         while containedBits < numberOfBits:
             
-            tolerance += 1
+            tolerance += roundStep
             
             voisins = {
                 (
@@ -97,21 +108,66 @@ class colorMask():
             
             for color in voisins:
                 
-                if color in self.colorRepartition:
+                if color in actualColorRepartition:
                     
-                    containedBits += len(self.colorRepartition[color])
-                    
-                    for element in self.colorRepartition[color]:
-                        
-                        colorSet.add(element)
+                    containedBits += len(actualColorRepartition[color])
+                    colorSet.add(color)
+        
+        # for color in colorSet:
+            
+        #     print(color in actualColorRepartition)
+        
+        print("COLOR SET:",len(colorSet),colorSet)
+        
+        colorPixelSet = {
+            pixel
+            for key in colorSet
+            for pix in actualColorRepartition[key]
+            for pixel in pix
+        }
         
         self.colorSet = colorSet
         self.targetColor = targetColor
         self.tolerance = tolerance
+        self.colorPixelSet = colorPixelSet
+        
+        return colorPixelSet
     
     def _loadRange(self,targetColor:tuple,tolerance:int):
         
-        print("La flemme, pas encore fait...")
+        actualColorRepartition = self._customColorRepartition(targetColor, (tolerance-1)*10)
+        
+        colorPixelSet = set()
+        
+        print(actualColorRepartition.keys())
+        
+        print("TOLERANCE",tolerance)
+        
+        # for pixel in actualColorRepartition[tuple(n - (tolerance-1) for n in targetColor)]:
+        
+        for i,j,k in product((0,1),(0,1),(0,1)):
+            
+            element = (targetColor[0]-(tolerance+1)*i,targetColor[1]-(tolerance+1)*j,targetColor[2]-(tolerance+1)*k)
+            
+            if element in actualColorRepartition:
+                
+                print("COLORSETADD",element)
+                
+                for pixel in actualColorRepartition[element]:
+                
+                    for pix in pixel:
+                    
+                        colorPixelSet.add(pix)
+        
+        
+        
+        # colorPixelSet = set(pixel for pixel in actualColorRepartition[targetColor]) | set(
+        #     pixel for pixel in actualColorRepartition[tuple(n - tolerance for n in targetColor)]
+        # ) 
+        
+        # Ensemble des pixels compris de [-tolerance;+tolerance]
+        
+        return colorPixelSet
     
     def getColorRange(self,lengthOfMessage:int = None,targetColor:tuple = None, tolerance:int = None, whiteNoise:int = 0) -> set:
         """
@@ -124,24 +180,28 @@ class colorMask():
         
         if lengthOfMessage: # Si le message a une longueur = désir d'encryption (dans le cas contraire la longueur du message voulue serait inconnue)
             
-            
-            
-            # toleranceLength = len(self.colorRepartition)
-            
-            self._createRange(lengthOfMessage + whiteNoise)
+            return self._createRange(lengthOfMessage + whiteNoise)
         
         else:
             
-            self._loadRange(targetColor,tolerance)
+            return self._loadRange(targetColor,tolerance)
 
 
 myMask = colorMask(Image.open("Steganosaurus/bus.jpg"))
-print(len(myMask.colorRepartition))
-print(len(myMask._customColorRepartition((245,163,26),100)))
-# myMask.getColorRange(8)
+# print(len(myMask.colorRepartition))
+# print(len(myMask._customColorRepartition((245,163,26),100)))
+print(len(myMask.getColorRange(lengthOfMessage = 100)))
+print(f"100 [expected] vs {(myMask.tolerance-1) * 10} [given]")
+print("TARGET COLOR:", myMask.targetColor)
+print(len(myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)))
 
-# print(myMask.colorSet)
+# print(myMask.colorPixelDict)
+# print(myMask.colorPixelDict.values())
 # print(len(myMask.colorSet))
+
+# with open("Steganosaurus/results.txt","w") as results:
+    
+#     results.write(str(myMask.colorPixelSet))
 
 # for _ in range(10):
     
