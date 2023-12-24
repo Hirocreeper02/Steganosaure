@@ -45,20 +45,32 @@ class colorMask():
         
         return numberOfBits//10+1
     
-    def _roundColor(self,pixel:tuple,targetColor:tuple,roundStep:int) -> tuple:
+    def _roundColorValue(self, reference:int, component:int, roundStep:int):
         
-        roundedColor = []
+        result = component + (reference-component)%roundStep
+        result -= roundStep * (result > component)
         
-        for reference, component in zip(targetColor,pixel):
-            
-            result = component - component%roundStep + reference%roundStep
-            result -= roundStep*(result >= component)
-            
-            roundedColor.append(result)
+        return result
+    
+    def _roundColor(self,pixelColor:tuple,targetColor:tuple,roundStep:int) -> tuple:
+        """
+            Résultat -> 
+            couleur                     # Target color
+            - couleur mod(roundStep)    # We take only the rounded rest
+            + reference%roundStep       # We take it to the closest rounded value of the target color
+            ( - roundStep)              # If it's bigger than the reference component, take it down of a notch
+        """
+        
+        roundedColor = [
+            self._roundColorValue(reference, component, roundStep)
+            for reference, component in zip(targetColor, pixelColor)
+        ]
         
         return tuple(roundedColor)
     
     def _customColorRepartition(self,targetColor:tuple,roundStep:int) -> dict:
+        
+        print("ROUNDSTEP:",roundStep)
         
         repartition = {}
         
@@ -83,9 +95,12 @@ class colorMask():
         
         targetColor = random.choice(list(self.colorRepartition))
         tolerance = 0
+        toleranceIndicator = 0
         roundStep = self._getRoundStep(numberOfBits)
-
+        
         actualColorRepartition = self._customColorRepartition(targetColor,roundStep)
+        
+        print("LEN ACTUALCOLORREPARTITION START",len(actualColorRepartition))
         
         colorSet = {targetColor}
         
@@ -94,6 +109,9 @@ class colorMask():
         while containedBits < numberOfBits:
             
             tolerance += roundStep
+            toleranceIndicator += 1
+            
+            print("EINMAL")
             
             voisins = {
                 (
@@ -129,34 +147,41 @@ class colorMask():
         self.colorSet = colorSet
         self.targetColor = targetColor
         self.tolerance = tolerance
+        self.toleranceIndicator = toleranceIndicator
         self.colorPixelSet = colorPixelSet
         
         return colorPixelSet
     
     def _loadRange(self,targetColor:tuple,tolerance:int):
         
-        actualColorRepartition = self._customColorRepartition(targetColor, (tolerance-1)*10)
+        print("TOLERANCE INDICATOR",self.toleranceIndicator)
         
+        actualColorRepartition = self._customColorRepartition(targetColor, (myMask.tolerance))
+        
+        print("LEN ACTUALCOLORREPARTITION END",len(actualColorRepartition),", with keys:\n",actualColorRepartition.keys())
+
         colorPixelSet = set()
         
-        print(actualColorRepartition.keys())
+        # print(actualColorRepartition.keys())
         
-        print("TOLERANCE",tolerance)
+        # print("TOLERANCE",tolerance)
         
         # for pixel in actualColorRepartition[tuple(n - (tolerance-1) for n in targetColor)]:
         
         for i,j,k in product((0,1),(0,1),(0,1)):
+
+            print("ELEMENT",(targetColor[0]-(tolerance)*i,targetColor[1]-(tolerance)*j,targetColor[2]-(tolerance)*k))
             
-            element = (targetColor[0]-(tolerance+1)*i,targetColor[1]-(tolerance+1)*j,targetColor[2]-(tolerance+1)*k)
+            element = (targetColor[0]-(tolerance)*i,targetColor[1]-(tolerance)*j,targetColor[2]-(tolerance)*k)
             
             if element in actualColorRepartition:
                 
-                print("COLORSETADD",element)
+                print("COLORSETADD",element,":",len(actualColorRepartition[element]))
                 
                 for pixel in actualColorRepartition[element]:
                 
                     for pix in pixel:
-                    
+                        
                         colorPixelSet.add(pix)
         
         
@@ -187,13 +212,16 @@ class colorMask():
             return self._loadRange(targetColor,tolerance)
 
 
-myMask = colorMask(Image.open("Steganosaurus/bus.jpg"))
+myMask = colorMask(Image.open("Steganosaurus/kenan.jpeg"))
 # print(len(myMask.colorRepartition))
 # print(len(myMask._customColorRepartition((245,163,26),100)))
-print(len(myMask.getColorRange(lengthOfMessage = 100)))
+range1 = myMask.getColorRange(lengthOfMessage = 100)
+print("START LEN",len(range1))
 print(f"100 [expected] vs {(myMask.tolerance-1) * 10} [given]")
 print("TARGET COLOR:", myMask.targetColor)
-print(len(myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)))
+range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
+print("END LEN",len(range2))
+print("DIFFERENCE",range2-range1)
 
 # print(myMask.colorPixelDict)
 # print(myMask.colorPixelDict.values())
