@@ -76,4 +76,4 @@ decryption = {
 a = decryption - encryption
 b = decryption - inconsistentEncryption
 
-print(a,b)
+print(a, b)

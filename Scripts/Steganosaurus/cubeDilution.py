@@ -253,25 +253,30 @@ def tempGetSquaresMoche(squareCoords:list):
     
     return squares
 
+mask = colorDistinction.colorMask(Image.open("Steganosaurus/kenan.jpeg"))
+
 def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool = False):
 
     image = cubeImage(sourcePath)
     if colorGradient:
-        result = colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(),lengthOfMessage = 8 * len(message))
-        image.squares = tempGetSquaresMoche(sorted(list(result[0]), key=lambda x: (x[0], x[1])))
+        image.squares = tempGetSquaresMoche(sorted(list(mask.getColorRange(lengthOfMessage = 8 * len(message))), key=lambda x: (x[0], x[1])))
     image.encrypt(message)
     image.source.save(returnPath)
     
     if colorGradient:
-        print("RESULTS",result[1],result[2])
-        return result[1],result[2]
+        print("RESULTS")
 
 def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) -> str:
 
     image = cubeImage(sourcePath)
     
     if colorPick and tolerance:
-        image.squares = tempGetSquaresMoche(sorted(list(colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(), targetColor = colorPick, tolerance = tolerance)[0]), key=lambda x: (x[0], x[1])))
+        image.squares = tempGetSquaresMoche(sorted(list(colorDistinction.getColorRange(targetColor = mask.targetColor, tolerance = mask.tolerance))))
     
     message = image.decrypt()
     return message
+
+
+encryptMessage("Hello","Steganosaurus/kenan.jpeg","Steganosaurus/kkkeeennnaaannn.png",True)
+msg = decryptMessage()
+print(msg)
