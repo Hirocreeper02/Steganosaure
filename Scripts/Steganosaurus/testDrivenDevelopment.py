@@ -86,8 +86,6 @@ class TestCubeImage(unittest.TestCase):
 
         self.squares = self.Farouk._getSquares()
 
-    #    self.imageorigine = PIL.Image.open(os.path.join(base_directory,"kenan.jpeg"))
-
         self.imageFarouk = PIL.Image.open(pathFarouk)
 
     def test_getSquares(self):
