@@ -118,38 +118,37 @@ class TestCubeImage(unittest.TestCase):
         self.assertEqual(valeurTest[2],254)
 
 
+    def test_checkSquare(self):
+
+        valeurSquare = self.Farouk._checkSquare(self.squares[0],0)
+
+        valeurTest = sum((self.imageFarouk.getpixel(self.squares[0][i])[0])%2 for i in range(4))
+
+        if valeurTest == 2:
+
+            valeurTest = 1
+        
+        else:
+
+            valeurTest = 0
+
+        self.assertIsInstance(valeurSquare, int)
+        self.assertIs(valeurSquare, valeurTest)
+
+
     def test_incrementRandomPixel(self):
 
-        squareColor = []
-
-        squareColorMod = []
-
         for i,square in enumerate(self.squares[0]):
 
-            squareColor.append(self.imageFarouk.getpixel((self.squares[0][i])))
+            self.imageFarouk.putpixel(self.imageFarouk.putpixel(self.squares[0][i]+self.imageFarouk.putpixel(self.squares[0][i])%2))
 
         listeReste = self.Farouk._incrementRandomPixel(self.squares[0],0)
-
-        for i,square in enumerate(self.squares[0]):
-
-            squareColorMod.append(self.imageFarouk.getpixel((self.squares[0][i])))
 
         self.assertIsInstance(listeReste, list)
 
         self.assertEqual(len(listeReste), 3)
 
-        #print(self.squares[0],listeReste)
-        a = int(str(set(self.squares[0]) - set(listeReste))[2])
-
-        b = int(str(set(self.squares[0]) - set(listeReste))[-3])
-
-        f = (a,b)
-
-        print(squareColor, squareColorMod)
-
-        #print((self.imageFarouk.getpixel(f)[0]+1,self.imageFarouk.getpixel(f)[1],self.imageFarouk.getpixel(f)[2]),squareColorMod)
-
-        #self.assertIn(self.imageFarouk.getpixel(f)[0]+1, squareColorMod)
+        self.Farouk.checkSquare(self.squares[0])
 
 
 

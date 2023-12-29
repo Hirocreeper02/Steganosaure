@@ -70,7 +70,7 @@ class cubeImage():
         
         return squares
     
-    def checkSquare(self,square:list,targetColor:int) -> bool:
+    def checkSquare(self,square:list,targetColor:int) -> int:
         """
             Vérifie si un carré a un nombre égal de valeurs paires et impaires sur la couleur souhaitée
             

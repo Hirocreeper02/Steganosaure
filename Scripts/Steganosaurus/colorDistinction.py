@@ -203,7 +203,7 @@ class colorMask():
             return self._loadRange(targetColor,tolerance)
 
 
-myMask = colorMask(Image.open("Steganosaurus/kenan.jpeg"))
+myMask = colorMask(Image.open("kenan.jpeg"))
 # print(len(myMask.colorRepartition))
 # print(len(myMask._customColorRepartition((245,163,26),100)))
 print("\n######################\n##### ENCRYPTION #####\n######################\n")
