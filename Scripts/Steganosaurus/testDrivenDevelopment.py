@@ -174,6 +174,19 @@ class TestCubeImage(unittest.TestCase):
         self.assertEqual(valeurCube, valeurTest)
 
 
+    def test_setCube(self):
+
+        self.Farouk._setCube(self.squares[1],0)
+
+        self.assertEqual(self.Farouk._checkCube(self.squares[1]),0)
+
+        self.Farouk._setCube(self.squares[1],1)
+
+        self.assertEqual(self.Farouk._checkCube(self.squares[1]),1)
+
+
+
+
 
 
 

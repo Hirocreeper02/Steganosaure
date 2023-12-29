@@ -193,7 +193,7 @@ class cubeImage():
         """
             [PRIVEE]
             
-            Vérifie la valeur d'un square, en prenant en compte toutes les couleurs, et inverse en fonction du board
+            Vérifie la valeur d'un square, en prenant en compte toutes les couleurs
             
             ==============================
             
