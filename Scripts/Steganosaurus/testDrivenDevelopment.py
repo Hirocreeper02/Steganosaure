@@ -136,19 +136,46 @@ class TestCubeImage(unittest.TestCase):
         self.assertIs(valeurSquare, valeurTest)
 
 
+    def test_setSquare(self):
+
+        self.Farouk._setSquare(self.squares[0],True,0)
+
+        self.assertIs(self.Farouk._checkSquare(self.squares[0],0),1)
+
+        self.Farouk._setSquare(self.squares[0],False,0)
+
+        self.assertIs(self.Farouk._checkSquare(self.squares[0],0),0)
+
+
+
     def test_incrementRandomPixel(self):
 
-        for i,square in enumerate(self.squares[0]):
+        nombreCoord = len(self.squares[0])
 
-            self.imageFarouk.putpixel(self.imageFarouk.putpixel(self.squares[0][i]+self.imageFarouk.putpixel(self.squares[0][i])%2))
+        squareIncr = len(self.Farouk._incrementRandomPixel(self.squares[0],0))
 
-        listeReste = self.Farouk._incrementRandomPixel(self.squares[0],0)
+        self.assertEqual(nombreCoord,squareIncr + 1)
+        
 
-        self.assertIsInstance(listeReste, list)
+    def test_checkCube(self):
 
-        self.assertEqual(len(listeReste), 3)
+        valeurCube = sum(self.Farouk._checkSquare(self.squares[1],i) for i in range(3))
 
-        self.Farouk.checkSquare(self.squares[0])
+        valeurTest = self.Farouk._checkCube(self.squares[1])
+
+        if valeurCube <2 :
+
+            valeurCube = 0
+
+        else : 
+
+            valeurCube = 1
+
+        self.assertEqual(valeurCube, valeurTest)
+
+
+
+
 
 
 
