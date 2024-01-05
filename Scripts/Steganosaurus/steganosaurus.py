@@ -49,3 +49,8 @@ massTimeTesting(100,10)
 # print(decryptedMessage)
 
 # print(f"ENCRYPTION: {secondTime-firstTime} s\nDECRYPTION: {thirdTime-secondTime} s \n(TOTAL: {thirdTime-firstTime} s)")
+
+
+
+if __name__ == "__main__":
+    print("==============================\nEXECUTION OF MODULE STEGANOSAURUS AS SCRIPT\n==============================")

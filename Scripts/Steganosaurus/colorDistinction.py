@@ -1,3 +1,14 @@
+"""
+    
+    Méthode de Distinction par Colorimétrie
+    
+    Ce module crée un masque de couleurs, dans lequel on cachera le message voulant être encrypté dans une image. Un masque de couleurs est un objet contenant la liste des squares (c.f. cubeDilution) dont la couleur du premier pixel est comprise dans l'intervalle (r±t, g±t, b±t), où r,g,b sont les valeurs d'une couleur arbitrairement choisie parmis celles de l'image dans laquelle on souhaite encrypter le message, et t est la tolérance vis-à-vis de cette couleur.
+        
+        EX: (r,g,b) = (116,72,227) ; t = 10 => Toutes les couleurs des pixels supérieurs gauches des squares de l'image comprises dans l'intervalle ([106;126];[62;82];[217;237]) feront partie du masque de couleurs
+        
+    Notons que t dépend de la taille du message voulant être encrypté (plus le message est gros, plus il faudra de pixels pour le cacher).
+"""
+
 from itertools import *
 
 from PIL import Image
@@ -7,6 +18,16 @@ import time
 class colorMask():
     
     def __init__(self,source:Image):
+        """
+            Attribus par argument:
+            - Source: image dans laquelle on va cacher le message
+
+            Attributs autogénérés:
+            - colorRepartition: dicitionnaire classant les pixels supérieurs gauche des squares par couleur
+            - colorSet: ensemble qui contiendra l'ensembles des pixels faisant partie de la sélection du masque de couleurs
+            - targetColor: couleur (r,g,b) arbitraire de l'image servant de point d'origine au masque
+            - tolerance: tolerance t qui indique quel interval sera toléré autour de la targetColor (r,g,b)
+        """
         
         self.source = source
         # self.colorRepartition = self.getColorRepartition()
@@ -18,11 +39,9 @@ class colorMask():
     
     def getColorRepartition(self) -> dict:
         """
-            Donne la liste de toutes les couleurs représentées dans l'image dans les clefs, et leur quantité dans les valeurs
+            Crée un dicitionnaire classant les pixels supérieurs gauche des squares par couleur
             
-            ==============================
-            
-            Pour chaque pixel, on ajoute 1 à la valeur associée à la clef portant le nom de la couleur
+            => dictionnaire {(r,g,b):[pixel1,pixel2,...]}
         """
         
         colorRepartition = {}
@@ -41,32 +60,35 @@ class colorMask():
         
         return colorRepartition
     
+    ### ARRONDI DE DICTIONNAIRES ###
+    """
+        Cette partie sert à regrouper les pixels de ColorRerpartition en ensemble similaires, afin de grandement réduire la taille du dictionnaire à parcourir pour les longs messages
+    """
+    
     def _getRoundStep(self,numberOfBits:int) -> int:
         """
-            [INTERNAL]
+            [FONCTION PRIVEE]
             
-            Function that gives an int which will be used as roundStep in the rounding of the color dictionnary
-            
-            ==============================
-            
-            y = x // 10 + 1
+            Sert à trouver le facteur d'arrondissement nécessaire à la colorRepartition en fonction de la taille du message voulant être encrypté (plus le message est gros, plus on arrondira les valeurs)
         """
         
         return numberOfBits//10+1
     
     def _roundColorValue(self, reference:int, component:int, roundStep:int):
         """
-            [INTERNAL]
+            [FONCTION PRIVEE]
             
-            Round the value of a colour according to a roundStep, which will then be used in the rounded colorDictionnary
+            Sert à arrondir une couleur (r,g,b) donnée en une des clefs du dictionnaire aux couleurs arrondies, en prenant en compte le facteur d'arrondissement et le reste de la division de la TargetColor.
             
-            ==============================
+            V
             
             Résultat -> 
             couleur                     # Target color
-            - couleur mod(roundStep)    # We take only the rounded rest
-            + reference%roundStep       # We take it to the closest rounded value of the target color
-            ( - roundStep)              # If it's bigger than the reference component, take it down of a notch
+            - couleur mod(roundStep)    # On ne prend que le reste arrondi
+            + reference%roundStep       # On l'amène à la valeur la plus proche de la TargetColor
+            ( - roundStep)              # Si la valeur est plus grande, on la décend d'un chouïa
+            
+            => int arrondi en fontion du roundtep
         """
         
         result = component + (reference-component)%roundStep
@@ -76,13 +98,11 @@ class colorMask():
     
     def _roundColor(self,pixelColor:tuple,targetColor:tuple,roundStep:int) -> tuple:
         """
-            [INTERNAL]
+            [FONCTION PRIVEE]
             
-            Function that rounds every r,g,b value of a colour
+            Sert à arondir les trois valeurs colorimétriques d'une couleur (r,g,b) en utilisant la fonction _roundColorValue (qui elle n'arrondit qu'une seule des valeurs)
             
-            ==============================
-            
-            -
+            => tuple (r,g,b) arrondi
         """
         
         roundedColor = [
@@ -94,13 +114,11 @@ class colorMask():
     
     def _customColorRepartition(self,targetColor:tuple,roundStep:int) -> dict:
         """
-            [INTERNAL]
+            [FONCTION PRIVEE]
             
-            Creates a dictionnary where the colours are grouped by rounding factor (thus decreasing the number of keys)
+            Crée un dictionnaire où les différents clefs de ColorRepartition sont réunies par similitudes, avec un arrondi de plus en plus tolérant en fonction de la taille du message encrypté, réduisant ainsi grandement le parcours à effectuer dans ColorRepartition dans les futures fonctions d'encryption (ceci est donc une méthode d'optimisation majeure).
             
-            ==============================
-            
-            -
+            => dictionnaire {(r,g,b):[pixel1,pixel2,...]}
         """
         
         print("ROUNDSTEP :",roundStep)
@@ -125,13 +143,11 @@ class colorMask():
     
     def _createRange(self,numberOfBits:int):
         """
-            [INTERNAL]
+            [FONCTION PRIVEE]
             
-            Calculates the range of colour which will be used to encrypt information
+            Calcule l'intervalle de couleur nécessaire pour cacher l'image et en rend les différentes informations. Le return et simplement l'ensemble de tous les pixels faisant partie du colorMask.
             
-            ==============================
-            
-            -
+            => colorSet = ((x,y),(x',y'),(x'',y''),...)
         """
         
         targetColor = random.choice(list(self.colorRepartition))
@@ -191,13 +207,12 @@ class colorMask():
     
     def _loadRange(self,targetColor:tuple,tolerance:int):
         """
-            [INTERNAL]
+            [FONCTION PRIVEE]
             
-            Reads the color range from a target color and a tolerance
+            Redonne l'ensemble des pixels faisant partie d'un masque en fonction d'une couleur d'origine et une tolérance (servant ainsi à la décryption du masque).
             
-            ==============================
-            
-            y = x // 10 + 1
+            => colorSet = ((x,y),(x',y'),(x'',y''),...)
+
         """
         
         print("TOLERANCE INDICATOR:",self.toleranceIndicator)
@@ -239,11 +254,7 @@ class colorMask():
     
     def getColorRange(self,lengthOfMessage:int = None,targetColor:tuple = None, tolerance:int = None, whiteNoise:int = 0) -> set:
         """
-            Donne un ensemble de toutes les couleurs dans lesquelles on pourra crypter de l'information
-            
-            ==============================
-            
-            On prend une couleur aléatoire, et ensuite on vérifie quel ±x il faut mettre à la couleur pour pouvoir crypter l'intégralité du message, où le whiteNoise est la quantité de charactères intuiles qu'on installera pour brouiller le lecteur
+            Fonction gérant le désir de création ou de décryption d'un intervalle de couleur définissant le masque.
         """
         
         if lengthOfMessage: # Si le message a une longueur = désir d'encryption (dans le cas contraire la longueur du message voulue serait inconnue)
