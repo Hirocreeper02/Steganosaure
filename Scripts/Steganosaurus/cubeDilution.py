@@ -1,3 +1,15 @@
+"""
+    Méthode de Répartition en Carrés de Pixels
+    
+    Ce module
+    
+    Ce module crée un masque de couleurs, dans lequel on cachera le message voulant être encrypté dans une image. Un masque de couleurs est un objet contenant la liste des squares (c.f. cubeDilution) dont la couleur du premier pixel est comprise dans l'intervalle (r±t, g±t, b±t), où r,g,b sont les valeurs d'une couleur arbitrairement choisie parmis celles de l'image dans laquelle on souhaite encrypter le message, et t est la tolérance vis-à-vis de cette couleur.
+        
+        EX: (r,g,b) = (116,72,227) ; t = 10 => Toutes les couleurs des pixels supérieurs gauches des squares de l'image comprises dans l'intervalle ([106;126];[62;82];[217;237]) feront partie du masque de couleurs
+        
+    Notons que t dépend de la taille du message voulant être encrypté (plus le message est gros, plus il faudra de pixels pour le cacher).
+"""
+
 from itertools import *
 import random
 

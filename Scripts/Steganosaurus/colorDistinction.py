@@ -1,5 +1,4 @@
 """
-    
     Méthode de Distinction par Colorimétrie
     
     Ce module crée un masque de couleurs, dans lequel on cachera le message voulant être encrypté dans une image. Un masque de couleurs est un objet contenant la liste des squares (c.f. cubeDilution) dont la couleur du premier pixel est comprise dans l'intervalle (r±t, g±t, b±t), où r,g,b sont les valeurs d'une couleur arbitrairement choisie parmis celles de l'image dans laquelle on souhaite encrypter le message, et t est la tolérance vis-à-vis de cette couleur.
@@ -30,7 +29,6 @@ class colorMask():
         """
         
         self.source = source
-        # self.colorRepartition = self.getColorRepartition()
         self.colorRepartition = self.getColorRepartition()
         self.colorSet = set()
         self.colorPixelSet = {} # Dictionnaire des pixels compris dans le masque
