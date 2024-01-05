@@ -58,6 +58,9 @@ class cubeImage():
     ### METHODES ###
     ################
     
+    def _checkInColorMask(self,value:int,colorIndex:int):
+        
+        return value < (self.colorMask.targetColor[colorIndex] + self.colorMask.tolerance)
     
     def _incrementColor(self,pixelColors:list,targetColor:int):
         """
@@ -74,7 +77,13 @@ class cubeImage():
             Si la valeur dépasse 255, on soustrait 1 au lieu d'ajouter 1
         """
         
-        pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
+        if self._checkInColorMask(pixelColors[targetColor]):
+            
+            pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
+        
+        else:
+            
+            pixelColors[targetColor] -= 1
         
         return pixelColors
     
@@ -186,9 +195,10 @@ class cubeImage():
                     if transformColor != list(map(lambda x: x%2,actualColor)):
                         
                         actualColor[targetColor] = actualColor[targetColor] - actualColor[targetColor]%2 + transformColor
+                        actualColor[targetColor] = self._incrementColor(transformColor,targetColor)
                         
                         self.source.putpixel(square[i],tuple(actualColor))
-    
+
     def _setCube(self,square:list,expectedValue:bool):
         """
             [PRIVEE]
@@ -215,10 +225,11 @@ class cubeImage():
     ### FONCTIONS UTILISATEUR ###
     #############################
     
-    def __init__(self, sourcePath:str):
+    def __init__(self, sourcePath:str, colorMask:colorDistinction.colorMask = None):
         
         self.source = Image.open(sourcePath)
         self.squares = self._getSquares()
+        self.colorMask = colorMask
     
     def encrypt(self, message:str):
         """
@@ -271,7 +282,7 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     image = cubeImage(sourcePath)
     
     if colorPick and tolerance:
-        image.squares = tempGetSquaresMoche(sorted(list(colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(), targetColor = colorPick, tolerance = tolerance)[0]), key=lambda x: (x[0], x[1])))
+        image.squares = tempGetSquaresMoche(sorted(list(mask.getColorRange(targetColor = colorPick, tolerance = tolerance))))
     
     message = image.decrypt()
     return message
