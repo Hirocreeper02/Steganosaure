@@ -271,14 +271,12 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     image = cubeImage(sourcePath)
     
     if colorPick and tolerance:
-        image.squares = tempGetSquaresMoche(sorted(list(mask.getColorRange(targetColor = mask.targetColor, tolerance = mask.tolerance))))
+        image.squares = tempGetSquaresMoche(sorted(list(colorDistinction.getColorRange(targetColor = mask.targetColor, tolerance = mask.tolerance))))
     
-    print("SAFETY", mask.getColorRange(lengthOfMessage = 8 * len("Hello"))-mask.getColorRange(targetColor = mask.targetColor, tolerance = mask.tolerance))
-
     message = image.decrypt()
     return message
 
 
 encryptMessage("Hello","Steganosaurus/kenan.jpeg","Steganosaurus/kkkeeennnaaannn.png",True)
-msg = decryptMessage("Steganosaurus/kkkeeennnaaannn.png",mask.targetColor,mask.tolerance)
+msg = decryptMessage()
 print(msg)
