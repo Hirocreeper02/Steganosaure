@@ -42,10 +42,32 @@ class colorMask():
         return colorRepartition
     
     def _getRoundStep(self,numberOfBits:int) -> int:
+        """
+            [INTERNAL]
+            
+            Function that gives an int which will be used as roundStep in the rounding of the color dictionnary
+            
+            ==============================
+            
+            y = x // 10 + 1
+        """
         
         return numberOfBits//10+1
     
     def _roundColorValue(self, reference:int, component:int, roundStep:int):
+        """
+            [INTERNAL]
+            
+            Round the value of a colour according to a roundStep, which will then be used in the rounded colorDictionnary
+            
+            ==============================
+            
+            Résultat -> 
+            couleur                     # Target color
+            - couleur mod(roundStep)    # We take only the rounded rest
+            + reference%roundStep       # We take it to the closest rounded value of the target color
+            ( - roundStep)              # If it's bigger than the reference component, take it down of a notch
+        """
         
         result = component + (reference-component)%roundStep
         result -= roundStep * (result > component)
@@ -54,11 +76,13 @@ class colorMask():
     
     def _roundColor(self,pixelColor:tuple,targetColor:tuple,roundStep:int) -> tuple:
         """
-            Résultat -> 
-            couleur                     # Target color
-            - couleur mod(roundStep)    # We take only the rounded rest
-            + reference%roundStep       # We take it to the closest rounded value of the target color
-            ( - roundStep)              # If it's bigger than the reference component, take it down of a notch
+            [INTERNAL]
+            
+            Function that rounds every r,g,b value of a colour
+            
+            ==============================
+            
+            -
         """
         
         roundedColor = [
@@ -69,6 +93,15 @@ class colorMask():
         return tuple(roundedColor)
     
     def _customColorRepartition(self,targetColor:tuple,roundStep:int) -> dict:
+        """
+            [INTERNAL]
+            
+            Creates a dictionnary where the colours are grouped by rounding factor (thus decreasing the number of keys)
+            
+            ==============================
+            
+            -
+        """
         
         print("ROUNDSTEP :",roundStep)
         
@@ -91,6 +124,15 @@ class colorMask():
         return repartition
     
     def _createRange(self,numberOfBits:int):
+        """
+            [INTERNAL]
+            
+            Calculates the range of colour which will be used to encrypt information
+            
+            ==============================
+            
+            -
+        """
         
         targetColor = random.choice(list(self.colorRepartition))
         tolerance = 0
@@ -127,14 +169,8 @@ class colorMask():
                 
                 if color in actualColorRepartition:
                     
-                    print("HEY",color)
-                    
                     containedBits += len(actualColorRepartition[color])
                     colorSet.add(color)
-                
-                else:
-                    
-                    print("INCONSISTENCE",color)
         
         colorPixelSet = {
             pixel
@@ -154,6 +190,15 @@ class colorMask():
         return colorPixelSet
     
     def _loadRange(self,targetColor:tuple,tolerance:int):
+        """
+            [INTERNAL]
+            
+            Reads the color range from a target color and a tolerance
+            
+            ==============================
+            
+            y = x // 10 + 1
+        """
         
         print("TOLERANCE INDICATOR:",self.toleranceIndicator)
         
@@ -167,14 +212,21 @@ class colorMask():
         
         colorPixelSet = set()
         
-        for i,j,k in product(range(-tolerance,tolerance+1,roundStep),range(-tolerance,tolerance+1,roundStep),range(-tolerance,tolerance+1,roundStep)):
-            
-            color = (targetColor[0]+i,targetColor[1]+j,targetColor[2]+k)
+        voisins = {
+            (
+                targetColor[0] + sign*(tolerance * i),
+                targetColor[1] + sign*(tolerance * j),
+                targetColor[2] + sign*(tolerance * k),
+            )
+            for sign, i, j, k in product(
+                (-1,1), range(self.toleranceIndicator+1), range(self.toleranceIndicator+1), range(self.toleranceIndicator+1)
+            )
+        }
+        
+        for color in voisins:
             
             if color in actualColorRepartition:
-                
-                print("ELEMENT",(targetColor[0]+i,targetColor[1]+j,targetColor[2]+k),":",sum(len(x) for  x in actualColorRepartition[color]))
-                
+            
                 for pixel in actualColorRepartition[color]:
                     
                     for pix in pixel:
@@ -203,42 +255,13 @@ class colorMask():
             return self._loadRange(targetColor,tolerance)
 
 
-<<<<<<< Updated upstream
-myMask = colorMask(Image.open("kenan.jpeg"))
-# print(len(myMask.colorRepartition))
-# print(len(myMask._customColorRepartition((245,163,26),100)))
-=======
 myMask = colorMask(Image.open("Steganosaurus/kenan.jpeg"))
 # print(len(myMask.colorRepartition))
-print(len(myMask._customColorRepartition((245,163,26),100)))
->>>>>>> Stashed changes
+# print(len(myMask._customColorRepartition((245,163,26),100)))
 print("\n######################\n##### ENCRYPTION #####\n######################\n")
 range1 = myMask.getColorRange(lengthOfMessage = 100)
 print(f"100 [expected] vs {(myMask.tolerance)} [given]")
 print("TARGET COLOR:", myMask.targetColor,"\n")
 print("######################\n##### DECRYPTION #####\n######################\n")
 range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
-<<<<<<< Updated upstream
 print(" ")
-# print("DIFFERENCE",range2-range1)
-
-# print(myMask.colorPixelDict)
-# print(myMask.colorPixelDict.values())
-# print(len(myMask.colorSet))
-
-# with open("Steganosaurus/results.txt","w") as results:
-    
-#     results.write(str(myMask.colorPixelSet))
-
-# for _ in range(10):
-    
-#     startTime = time.time(Image.open("Steganosaurus/jpg_wouhou.png"))
-    
-#     myMask = colorMask(Image.open("Steganosaurus/jpg_wouhou.png"))
-    
-#     endTime = time.time()
-    
-#     print("EXECUTION TIME:",endTime-startTime)
-=======
-print(" ")
->>>>>>> Stashed changes
