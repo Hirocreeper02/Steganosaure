@@ -203,15 +203,22 @@ class colorMask():
             return self._loadRange(targetColor,tolerance)
 
 
+<<<<<<< Updated upstream
 myMask = colorMask(Image.open("kenan.jpeg"))
 # print(len(myMask.colorRepartition))
 # print(len(myMask._customColorRepartition((245,163,26),100)))
+=======
+myMask = colorMask(Image.open("Steganosaurus/kenan.jpeg"))
+# print(len(myMask.colorRepartition))
+print(len(myMask._customColorRepartition((245,163,26),100)))
+>>>>>>> Stashed changes
 print("\n######################\n##### ENCRYPTION #####\n######################\n")
 range1 = myMask.getColorRange(lengthOfMessage = 100)
 print(f"100 [expected] vs {(myMask.tolerance)} [given]")
 print("TARGET COLOR:", myMask.targetColor,"\n")
 print("######################\n##### DECRYPTION #####\n######################\n")
 range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
+<<<<<<< Updated upstream
 print(" ")
 # print("DIFFERENCE",range2-range1)
 
@@ -232,3 +239,6 @@ print(" ")
 #     endTime = time.time()
     
 #     print("EXECUTION TIME:",endTime-startTime)
+=======
+print(" ")
+>>>>>>> Stashed changes
