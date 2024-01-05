@@ -1,13 +1,9 @@
 """
     Méthode de Répartition en Carrés de Pixels
     
-    Ce module
-    
-    Ce module crée un masque de couleurs, dans lequel on cachera le message voulant être encrypté dans une image. Un masque de couleurs est un objet contenant la liste des squares (c.f. cubeDilution) dont la couleur du premier pixel est comprise dans l'intervalle (r±t, g±t, b±t), où r,g,b sont les valeurs d'une couleur arbitrairement choisie parmis celles de l'image dans laquelle on souhaite encrypter le message, et t est la tolérance vis-à-vis de cette couleur.
-        
-        EX: (r,g,b) = (116,72,227) ; t = 10 => Toutes les couleurs des pixels supérieurs gauches des squares de l'image comprises dans l'intervalle ([106;126];[62;82];[217;237]) feront partie du masque de couleurs
-        
-    Notons que t dépend de la taille du message voulant être encrypté (plus le message est gros, plus il faudra de pixels pour le cacher).
+    Ce module regroupe les pixels en division de quatre appelés squares. Ces squares sont donc simplement des listes de positions de pixel du type [(x;y);(x+1;y);(x;y+1);(x+1;y+1)]. Chacun de ces squares stockera une valeur binaire (un 1 ou un 0), ainsi huit squares sotckernt l'information d'un charactère de texte (en réalité, seuls 7 bits seront dédiés au charactère lui-même, lui huitième désigne s'il faut lire ou non l'information du charactère).
+    Pour déterminer ou définir si un square est un 1 ou un 0, on le décompose en trois couches: la couche rouge (r), la couche verte (g), et la couche bleue (b). On observe ensuite pour chaque couche la valeur de chacun des pixels (d'où l'utilisation du terme de "cube"). Si, parmis la quatre valeurs d'une couche, il y a un nombre égal de valeurs paires et impaires, la couche rend une valeur True. Si la majorité des trois couches ont une valeur True, le square sera un 1, sinon il sera un 0. 
+    Donc, pour coder de l'information, il suffit de changer la répartition des valeurs paires et impaires dans les différentes couleurs des squares. Ces choix de métode de lecture en apparence arbitraires sont en réalités inscrits dans une perspective plus générale de camouflage des modifications approtées à l'image, voulant donc offrir des résultats "statistiquemenets probables".
 """
 
 from itertools import *
@@ -24,9 +20,7 @@ OHNOOOOOOOOONNNN = {'1010110': ' ', '0110011': 'e', '0100111': 't', '0000111': '
 
 def translateBinary(message:str) -> list:
     """
-        message textuel ==> liste de valeurs binaires
-        
-        Fonction servant à passer d'un message lettré à un message binaire
+        Traduis une string en une liste de valeurs binaires en fonction du dictionnaire ASCII customisé (le dictionnaire ASCII est customisé pour équilibrer la quantité de 0 et de 1 dans les charactères les plus communs afin de les rendre plus discrets)
     """
     
     binaryList = [
@@ -41,9 +35,7 @@ def translateBinary(message:str) -> list:
 
 def translateAlphabetical(binaryList:list) -> str:
     """
-        liste de valeurs binaires ==> message textuel
-        
-        Fonction servant à passer d'un message binaire à un message lettré
+        Traduis une liste de valeurs binaires en une string en fonction du dictionnaire ASCII customisé (le dictionnaire ASCII est customisé pour équilibrer la quantité de 0 et de 1 dans les charactères les plus communs afin de les rendre plus discrets)
     """
     
     binaryList = [binaryList[i:i+8] for i in range(0, len(binaryList)-len(binaryList)%8, 8)] # Division en tronçons de 8 bits
@@ -76,7 +68,7 @@ class cubeImage():
     
     def _incrementColor(self,pixelColors:list,targetColor:int):
         """
-            [PRIVEE]
+            [FONCTION PRIVEE]
             
             ==============================
             
@@ -101,7 +93,7 @@ class cubeImage():
     
     def _incrementRandomPixel(self,square:list,targetColor:int) -> list:
         """
-            [PRIVEE]
+            [FONCTION PRIVEE]
             
             ==============================
             
@@ -124,7 +116,7 @@ class cubeImage():
     
     def _getSquares(self) -> list:
         """
-            [PRIVEE]
+            [FONCTION PRIVEE]
             Divise l'image en carrés de 2x2 pixels.
         """
         
@@ -143,7 +135,7 @@ class cubeImage():
     
     def _checkSquare(self,square:list,targetColor:int) -> bool:
         """
-            [PRIVATE]
+            [FONCTION PRIVEE]
             
             Verifies if a square has an equal number of even and uneven values on the targeted color
             
@@ -156,7 +148,7 @@ class cubeImage():
     
     def _checkCube(self,square:list) -> bool:
         """
-            [PRIVATE]
+            [FONCTION PRIVEE]
             
             Checks the value of a square, taking into aconsideratiion the three color layers
             
@@ -169,7 +161,7 @@ class cubeImage():
     
     def _setSquare(self,square:list,expectedValue:int,targetColor:int,actualValue:list = None):
         """
-            [PRIVATE]
+            [FONCTION PRIVEE]
             
             Changes the value of a square to the desired one
             
@@ -213,7 +205,7 @@ class cubeImage():
 
     def _setCube(self,square:list,expectedValue:bool):
         """
-            [PRIVEE]
+            [FONCTION PRIVEE]
             
             Vérifie la valeur d'un square, en prenant en compte toutes les couleurs
             
@@ -277,7 +269,9 @@ def tempGetSquaresMoche(squareCoords:list):
     return squares
 
 def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool = False):
-
+    
+    return
+    
     image = cubeImage(sourcePath)
     if colorGradient:
         result = colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(),lengthOfMessage = 8 * len(message))
@@ -290,7 +284,9 @@ def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool 
         return result[1],result[2]
 
 def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) -> str:
-
+    
+    return
+    
     image = cubeImage(sourcePath)
     
     if colorPick and tolerance:

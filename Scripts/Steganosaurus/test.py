@@ -1,5 +1,3 @@
-import colorDistinction
+import cubeDilution
 
-print(colorDistinction.__doc__)
-
-print(help(colorDistinction))
+print(help(cubeDilution))
