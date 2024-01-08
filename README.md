@@ -36,6 +36,8 @@ Ce projet consiste en la création de différents algorithmes nous permettant de
  
 ## Mode d'emploi
 
+Dans cette section, nous allons détailler la manière d'utiliser nos méthodes. Il y a deux façons de l'approcher, en tant que script ou en tant que module.
+
 ### Utilisation comme script
  
 ### Utilisation comme module

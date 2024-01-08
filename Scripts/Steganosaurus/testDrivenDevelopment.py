@@ -16,7 +16,7 @@ class TestCodeAndCrypte(unittest.TestCase):
 
     def setUp(self):
 
-        self.message = "Hello World"
+        self.message = "Hello Worldvsvv dhsvhvchdshdhsvdhddvhdhsvhdhvdhsvhvdhdsvdhvhsvdhhdsvdhv vdhshvhvds"
 
         self.message_coder = cubeDilution.translateBinary(self.message)
 

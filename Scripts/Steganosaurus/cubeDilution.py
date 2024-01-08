@@ -299,10 +299,10 @@ def decryptMessage(sourcePath:str) -> str:
     targetColor = tuple([list_numbers[_] for _ in range(3)])
     tolerance = list_numbers[-2]
     image.mask.toleranceIndicator = list_numbers[-1]
-    print([targetColor[i] + (j-1)*tolerance for j in range(0, 3, 2)  for i in range(3)])
+#    print([targetColor[i] + (j-1)*tolerance for j in range(0, 3, 2)  for i in range(3)])
 
     image.squares = tempGetSquaresMoche(sorted(list(image.mask.getColorRange(targetColor = targetColor, tolerance = tolerance))))
-    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
+#    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
     message = image.decrypt()
     
     return message

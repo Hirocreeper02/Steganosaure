@@ -122,11 +122,11 @@ class colorMask():
             => dictionnaire {(r,g,b):[pixel1,pixel2,...]}
         """
         
-        print("ROUNDSTEP :",roundStep)
+#        print("ROUNDSTEP :",roundStep)
         
         repartition = {}
         
-        print("SECURITY CHECK CCR :",len(self.colorRepartition))
+#        print("SECURITY CHECK CCR :",len(self.colorRepartition))
         
         for color in self.colorRepartition:
             
@@ -158,7 +158,7 @@ class colorMask():
         
         actualColorRepartition = self._customColorRepartition(targetColor,roundStep)
         
-        print("CUSTOMCOLORREPARTITION START :",len(actualColorRepartition))
+#        print("CUSTOMCOLORREPARTITION START :",len(actualColorRepartition))
         
         colorSet = {targetColor}
         
@@ -169,7 +169,7 @@ class colorMask():
             tolerance += roundStep
             toleranceIndicator += 1
 
-            print("LOOP WORK CHECK",toleranceIndicator)
+#            print("LOOP WORK CHECK",toleranceIndicator)
                         
             voisins = {
                 (
@@ -196,7 +196,7 @@ class colorMask():
             for pixel in pix
         }
         
-        print("PIXELS (REAL REFERENTIAL) #01 :",len(colorPixelSet),",",list(colorPixelSet)[0])
+#        print("PIXELS (REAL REFERENTIAL) #01 :",len(colorPixelSet),",",list(colorPixelSet)[0])
         
         self.colorSet = colorSet
         self.targetColor = targetColor
@@ -216,15 +216,15 @@ class colorMask():
 
         """
         
-        print("TOLERANCE INDICATOR:",self.toleranceIndicator)
+#        print("TOLERANCE INDICATOR:",self.toleranceIndicator)
         
         roundStep = tolerance//self.toleranceIndicator
         
         actualColorRepartition = self._customColorRepartition(targetColor, roundStep)
         
-        print("SELF TOLERANCE",roundStep)
+#        print("SELF TOLERANCE",roundStep)
         
-        print("CUSTOMCOLORREPARTITION END :",len(actualColorRepartition))
+#        print("CUSTOMCOLORREPARTITION END :",len(actualColorRepartition))
         
         colorPixelSet = set()
         
@@ -249,7 +249,7 @@ class colorMask():
                         
                         colorPixelSet.add(pix)
         
-        print("PIXELS (REAL REFERENTIAL) #02 :",len(colorPixelSet),",",list(colorPixelSet)[0])
+#        print("PIXELS (REAL REFERENTIAL) #02 :",len(colorPixelSet),",",list(colorPixelSet)[0])
         
         return colorPixelSet
     
@@ -265,17 +265,3 @@ class colorMask():
         else:
             
             return self._loadRange(targetColor,tolerance)
-
-
-# myMask = colorMask(Image.open("Scripts/Steganosaurus/kkkeeennnaaannn.png"))
-# print(len(myMask.colorRepartition))
-# print(len(myMask._customColorRepartition((245,163,26), 100)))
-# print("\n######################\n##### ENCRYPTION #####\n######################\n")
-# range1 = myMask.getColorRange(lengthOfMessage = 100)
-# print(f"100 [expected] vs {(myMask.tolerance)} [given]")
-# print("TARGET COLOR:", myMask.targetColor,"\n")
-# print("######################\n##### DECRYPTION #####\n######################\n")
-# range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
-# print(" ")
-# print(len(range1))
-# print(len(range2))
