@@ -32,7 +32,7 @@ Steanosaurus Rex
 # PROJET STEGANOSAURUS
  
 ## Descriptif
-Ce projet consiste en la création de différents algorithmes nous permettant de faire de la stéganographie avec des images de type PNG. Nous avons donc défini deux méthodes, empruntant des chemins différents mais tout en ayant en tête un objectif commun. La première (**CubeDilution**) camoufle le message en se basant sur la répartition de groupes de pixels représentant des bits d'information, tandis que l'autre méthode (**ColorDistinction**) se concentre sur la manière de trouver des régions de couleurs similaires dans l'image, où dissimuler notre message.
+Ce projet consiste en la création de différents algorithmes nous permettant de faire de la stéganographie avec des images de type PNG. Nous avons donc défini deux méthodes, empruntant des chemins différents mais tout en ayant en tête un objectif commun. La première (**CubeDilution**) camoufle le message en se basant sur la répartition de groupes de pixels représentant des bits d'information, tandis que la seconde (**ColorDistinction**) se concentre sur la manière de trouver des régions de couleurs similaires dans l'image, où dissimuler notre message.
  
 ## Mode d'emploi
 
@@ -40,7 +40,7 @@ Dans cette section, nous allons détailler la manière d'utiliser nos méthodes.
 
 ### Utilisation comme script
 Il faut tout d'abord commencer par ouvrir le fichier **steganosaurus.py** (en faisant bien attention à avoir l'image dans le même dossier que le fichier où alors copier scrupuleusement le chemin d'accès au fichier).
-Une fois que le fichier a été run, il suffit de se laisser porter par les instructions.
+Une fois que le fichier a été exécuté, il suffit de se laisser porter par les instructions.
 
 ### Utilisation comme module
 Après avoir importé le fichier **cubeDilution.py**, il suffit d'appeler la foction **encryptMessage()** en lui passant comme arguments le message (sous forme de chaîne de caractères), le chemin pour accéder à l'image que l'on veut modifier et, finalement, le chemin de où stocker l'image modifiée. Ensuite, pour décrypter, utilisez la fonction **decryptMessage()** avec comme seul argument le chemin d'accès à l'image.
@@ -70,11 +70,34 @@ On commence par utiliser **getColorRepartition** pour obtenir l'ensemble des cou
 Il faut après encore décider quelle partie du dictionnaire nous sera utile pour encrypter. Et ceci est le rôle de **_createRange**, où l'on commence par décider laquelle des couleurs sera notre couleur de référence qui sera de toute façcon inclue dans l'ensemble des couleurs retenues (un ensemble pour être sûr de ne pas prendre plusieurs fois la même couleur). On commence par notre couleur puis l'on s'éloigne de plus en plus jusqu'à avoir suffisamment de bits pour encrypter tout notre message.
 
 ## Journal de bord
-- Début novembre (8 et 10): prémisses des idées des deux méthodes et début du code (travail en groupe à trois)
-- Mi novembre (17): création des dictionnaires de traduction binaire et caractères (travail à trois)
-- du 22.11 au 03.12: travail sur un bug de CubeDilution (trois à réfléchir, résolu par Nils)
-- 10.12: optimisation de CubeDilution (Emilien)
-- 14.12 au 26.12: optimisation de ColorDistinction (Emilien)
-- 15.12 au 29.12: création des fonctions de test à posteriori (Nils)
-- 14.12 au 08.01: écriture du README (Yoann)
-- 08.01 : résolution des beugs finaux, finalisation des fonctions et de userInterface (travail à trois)
+- **[08.11.23-10.11.23] Emilien & Nils & Yoann :**
+	
+	Concepctualisation des idées des méthodes d'encryption et début du code.
+
+- **[17.11.23] Emilien & Nils & Yoann :** 
+	
+	Conceptions des charactères et leur dictionnaire de traduction binaire.
+
+- **[22.11.23-03.12.23] Emilien & Nils & Yoann :**
+	
+	Résolution d'un bug majeur de CubeDilution (Nils a gagné la cagnotte de 5.- pour avoir réussi à le résoudre).
+
+- **[10.12.23] Emilien :** 
+	
+	Optimisation de CubeDilution
+
+- **[14.12.23-26.12.23] Emilien :**
+	
+	Création et optimisation de ColorDistinction 
+
+- **[15.12.23-29.12.23] Nils :**
+	
+	Rédaction des fonctions de test (à posteriori, mais en soit on avait déjà des petits bouts de code qui testaient par ci par là)
+
+- **[14.12.23-08.01.23] Yoann :**
+	
+	Rédaction du README.md et documentation du code
+
+- **[08.01.2023] Emilien & Nils & Yoann :**
+
+	Peaufinage et résolution des bugs finaux, ainsi qu'implémentation de l'interface utilisateur par console.
