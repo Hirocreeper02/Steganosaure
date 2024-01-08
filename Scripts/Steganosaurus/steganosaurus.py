@@ -27,7 +27,7 @@ def userInterface():
             
             print(outputFileName)
 
-        cubeDilution.encryptMessage(message,inputFileName,outputFileName)
+        cubeDilution.encryptMessage2(message,inputFileName,outputFileName)
         
         print(f"\nLe message a été encrypté avec succès dans le fichier {outputFileName}!")
 

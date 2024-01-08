@@ -275,6 +275,14 @@ def encryptMessage(message:str,sourcePath:str,returnPath:str):
     image.source.save(returnPath)
     return squares1, colors
 
+def encryptMessage2(message:str,sourcePath:str,returnPath:str):
+
+    encryptMessage(message,sourcePath,returnPath)
+
+    if decryptMessage(returnPath)[:len(message)] != message:
+
+        encryptMessage2(message,sourcePath,returnPath)
+
 
 def decryptMessage(sourcePath:str) -> str:
 
@@ -299,9 +307,10 @@ def decryptMessage(sourcePath:str) -> str:
     
     return message
 
-# squares1, colors1 = encryptMessage("Hello the world !", "Scripts/Steganosaurus/farouk.png", "Scripts/Steganosaurus/kkkeeennnaaannn.png")
+# squares1, colors1 = encryptMessage("Hello the world !aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Scripts/Steganosaurus/farouk.png", "Scripts/Steganosaurus/kkkeeennnaaannn.png")
 # message, squares2, colors2 = decryptMessage("Scripts/Steganosaurus/kkkeeennnaaannn.png")
 # print(message)
+# print(len(squares1), len(squares2))
 # counter = 0
 # for i in range(136):
 #     if i == 0:

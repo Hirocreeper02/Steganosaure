@@ -22,7 +22,7 @@ class TestCodeAndCrypte(unittest.TestCase):
 
         self.message_decoder = cubeDilution.translateAlphabetical(self.message_coder)
 
-        cubeDilution.encryptMessage(self.message,pathKenan,pathFarouk)
+        cubeDilution.encryptMessage2(self.message,pathKenan,pathFarouk)
 
         self.message_decrypter = cubeDilution.decryptMessage(pathFarouk)
 
