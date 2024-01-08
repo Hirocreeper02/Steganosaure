@@ -77,8 +77,12 @@ class cubeImage():
             
             Si la valeur dépasse 255, on soustrait 1 au lieu d'ajouter 1
         """
-        
-        pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=self.mask.targetColor[targetColor])
+        if self.mask.targetColor is None:   #pour test
+            pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
+
+        else:
+            pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=self.mask.targetColor[targetColor])
+            
         return pixelColors
     
     def _incrementRandomPixel(self,square:list,targetColor:int) -> list:
@@ -293,7 +297,7 @@ def decryptMessage(sourcePath:str) -> str:
     colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
     message = image.decrypt()
     
-    return message, image.squares, colors
+    return message
 
 # squares1, colors1 = encryptMessage("Hello the world !", "Scripts/Steganosaurus/farouk.png", "Scripts/Steganosaurus/kkkeeennnaaannn.png")
 # message, squares2, colors2 = decryptMessage("Scripts/Steganosaurus/kkkeeennnaaannn.png")

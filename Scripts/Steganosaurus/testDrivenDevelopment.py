@@ -136,11 +136,11 @@ class TestCubeImage(unittest.TestCase):
 
     def test_setSquare(self):
 
-        self.Farouk._setSquare(self.squares[0],True,0)
+        self.Farouk._setSquare(square=self.squares[0],expectedValue=True,targetColor=0)
 
         self.assertIs(self.Farouk._checkSquare(self.squares[0],0),1)
 
-        self.Farouk._setSquare(self.squares[0],False,0)
+        self.Farouk._setSquare(square=self.squares[0],expectedValue=False,targetColor=0)
 
         self.assertIs(self.Farouk._checkSquare(self.squares[0],0),0)
 
