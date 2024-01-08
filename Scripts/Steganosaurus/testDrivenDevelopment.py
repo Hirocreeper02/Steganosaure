@@ -6,8 +6,8 @@ import cubeDilution
 
 # chemin de base du dossier
 base_directory = os.getcwd()
-pathFarouk = os.path.join(base_directory,"farouk.png")
-pathKenan = os.path.join(base_directory,"kenan.jpeg")
+pathFarouk = os.path.join(base_directory,"Steganosaurus/farouk.png")
+pathKenan = os.path.join(base_directory,"Steganosaurus/kenan.jpeg")
 
 
 class TestCodeAndCrypte(unittest.TestCase):
@@ -145,7 +145,6 @@ class TestCubeImage(unittest.TestCase):
         self.assertIs(self.Farouk._checkSquare(self.squares[0],0),0)
 
 
-
     def test_incrementRandomPixel(self):
 
         nombreCoord = len(self.squares[0])
@@ -181,31 +180,6 @@ class TestCubeImage(unittest.TestCase):
         self.Farouk._setCube(self.squares[1],1)
 
         self.assertEqual(self.Farouk._checkCube(self.squares[1]),1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     unittest.main()
