@@ -335,8 +335,8 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     
     message = image.decrypt()
     return message
-squares1, colors1 = encryptMessage("Hello the world !", "Steganosaurus/farouk.png", "Steganosaurus/kkkeeennnaaannn.png")
-message, squares2, colors2 = decryptMessage("Steganosaurus/kkkeeennnaaannn.png")
+squares1, colors1 = encryptMessage("Hello the world !", "farouk.png", "kkkeeennnaaannn.png")
+message, squares2, colors2 = decryptMessage("kkkeeennnaaannn.png")
 print(message)
 counter = 0
 
