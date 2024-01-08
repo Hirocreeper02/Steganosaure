@@ -62,6 +62,9 @@ class cubeImage():
     ### METHODES ###
     ################
     
+    def _checkInColorMask(self,value:int,colorIndex:int):
+        
+        return value < (self.colorMask.targetColor[colorIndex] + self.colorMask.tolerance)
     
     def _incrementColor(self,pixelColors:list,targetColor:int):
         """
@@ -78,7 +81,14 @@ class cubeImage():
             Si la valeur dépasse 255, on soustrait 1 au lieu d'ajouter 1
         """
         
-        pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=self.mask.targetColor[targetColor])
+        if self._checkInColorMask(pixelColors[targetColor]):
+            
+            pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
+        
+        else:
+            
+            pixelColors[targetColor] -= 1
+        
         return pixelColors
     
     def _incrementRandomPixel(self,square:list,targetColor:int) -> list:
@@ -189,7 +199,7 @@ class cubeImage():
                     if transformColor != list(map(lambda x: x%2,actualColor)):
                         
                         actualColor[targetColor] = actualColor[targetColor] - actualColor[targetColor]%2 + transformColor
-
+                        actualColor[targetColor] = self._incrementColor(transformColor,targetColor)
                         
                         self.source.putpixel(square[i],tuple(actualColor))
 
@@ -219,11 +229,11 @@ class cubeImage():
     ### FONCTIONS UTILISATEUR ###
     #############################
     
-    def __init__(self, sourcePath:str):
+    def __init__(self, sourcePath:str, colorMask:colorDistinction.colorMask = None):
         
         self.source = Image.open(sourcePath)
         self.squares = self._getSquares()
-        self.mask = colorDistinction.colorMask(self.source)
+        self.colorMask = colorMask
     
     def encrypt(self, message:str):
         """
@@ -258,53 +268,29 @@ def tempGetSquaresMoche(squareCoords:list):
     
     return squares
 
-def encryptMessage(message:str,sourcePath:str,returnPath:str):
-
-    image = cubeImage(sourcePath)
-    result = sorted(list(image.mask.getColorRange(8 * len(message))))
-    squares1 = image.squares = tempGetSquaresMoche(result)
-    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
-    image.encrypt(message)
-    image.squares = tempGetSquaresMoche([(x, image.source.height - 2) for x in range(0,image.source.width-2,2)])
-    image.encrypt(str("{:03d}".format(image.mask.targetColor[0])) + str("{:03d}".format(image.mask.targetColor[1])) + 
-                  str("{:03d}".format(image.mask.targetColor[2])) + str("{:03d}".format(image.mask.tolerance)) + str("{:03d}".format(image.mask.toleranceIndicator)))
-    image.source.save(returnPath)
-    return squares1, colors
-
-
-def decryptMessage(sourcePath:str) -> str:
-
-    image = cubeImage(sourcePath)
-    liste = []
-    for x in range(0,image.source.width,2):
-        liste.append((x, image.source.height - 2))
-    image.squares = tempGetSquaresMoche(liste)
-    numbers = image.decrypt()
-    list_numbers = []
-
-    for i in range(5):
-        list_numbers.append(int(numbers[3*i]+numbers[3*i+1]+numbers[3*i+2]))
-    targetColor = tuple([list_numbers[_] for _ in range(3)])
-    tolerance = list_numbers[-2]
-    image.mask.toleranceIndicator = list_numbers[-1]
-    print([targetColor[i] + (j-1)*tolerance for j in range(0, 3, 2)  for i in range(3)])
-
-    image.squares = tempGetSquaresMoche(sorted(list(image.mask.getColorRange(targetColor = targetColor, tolerance = tolerance))))
-    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
-    message = image.decrypt()
+def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool = False):
     
-    return message, image.squares, colors
+    return
+    
+    image = cubeImage(sourcePath)
+    if colorGradient:
+        result = colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(),lengthOfMessage = 8 * len(message))
+        image.squares = tempGetSquaresMoche(sorted(list(result[0]), key=lambda x: (x[0], x[1])))
+    image.encrypt(message)
+    image.source.save(returnPath)
+    
+    if colorGradient:
+        print("RESULTS",result[1],result[2])
+        return result[1],result[2]
 
-squares1, colors1 = encryptMessage("Hello the world !", "farouk.png", "kkkeeennnaaannn.png")
-message, squares2, colors2 = decryptMessage("kkkeeennnaaannn.png")
-print(message)
-counter = 0
-for i in range(136):
-    if i == 0:
-        print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])
-    if squares1[i] != squares2[i]:
-        if counter == 0:
-            print(i-1, "POSITION", squares1[i-1][0], squares2[i-1][0], "COULEURS", colors1[i-1], colors2[i-1])
-            counter += 1
-        print(squares1[i] in squares2)
-        print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])
+def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) -> str:
+    
+    return
+    
+    image = cubeImage(sourcePath)
+    
+    if colorPick and tolerance:
+        image.squares = tempGetSquaresMoche(sorted(list(mask.getColorRange(targetColor = colorPick, tolerance = tolerance))))
+    
+    message = image.decrypt()
+    return message
