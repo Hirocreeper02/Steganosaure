@@ -45,11 +45,9 @@ class colorMask():
         
         colorRepartition = {}
         
-        for x,y in product(range(0,self.source.width,2),range(0,self.source.height-2,2)):
-            
-            tempColor = self.source.getpixel((x, y))
-            
-            if tempColor not in colorRepartition:
+        for x,y in product(range(0,self.source.width,2),range(0,self.source.height,2)):
+            if (x,y) not in self.forbidden:
+                tempColor = self.source.getpixel((x, y))
                 
                 if tempColor not in colorRepartition:
                     
@@ -269,15 +267,15 @@ class colorMask():
             return self._loadRange(targetColor,tolerance)
 
 
-myMask = colorMask(Image.open("kkkeeennnaaannn.png"))
-print(len(myMask.colorRepartition))
-print(len(myMask._customColorRepartition((245,163,26), 100)))
-print("\n######################\n##### ENCRYPTION #####\n######################\n")
-range1 = myMask.getColorRange(lengthOfMessage = 100)
-print(f"100 [expected] vs {(myMask.tolerance)} [given]")
-print("TARGET COLOR:", myMask.targetColor,"\n")
-print("######################\n##### DECRYPTION #####\n######################\n")
-range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
-print(" ")
-print(len(range1))
-print(len(range2))
+# myMask = colorMask(Image.open("Scripts/Steganosaurus/kkkeeennnaaannn.png"))
+# print(len(myMask.colorRepartition))
+# print(len(myMask._customColorRepartition((245,163,26), 100)))
+# print("\n######################\n##### ENCRYPTION #####\n######################\n")
+# range1 = myMask.getColorRange(lengthOfMessage = 100)
+# print(f"100 [expected] vs {(myMask.tolerance)} [given]")
+# print("TARGET COLOR:", myMask.targetColor,"\n")
+# print("######################\n##### DECRYPTION #####\n######################\n")
+# range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
+# print(" ")
+# print(len(range1))
+# print(len(range2))

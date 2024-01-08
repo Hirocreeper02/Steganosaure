@@ -6,8 +6,8 @@ import cubeDilution
 
 # chemin de base du dossier
 base_directory = os.getcwd()
-pathFarouk = os.path.join(base_directory,"Steganosaurus/farouk.png")
-pathKenan = os.path.join(base_directory,"Steganosaurus/kenan.jpeg")
+pathFarouk = os.path.join(base_directory,"farouk.png")
+pathKenan = os.path.join(base_directory,"kenan.jpeg")
 
 
 class TestCodeAndCrypte(unittest.TestCase):
