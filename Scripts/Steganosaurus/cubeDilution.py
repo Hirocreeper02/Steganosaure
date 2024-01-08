@@ -81,6 +81,7 @@ class cubeImage():
             Si la valeur dépasse 255, on soustrait 1 au lieu d'ajouter 1
         """
         
+<<<<<<< Updated upstream
         if self._checkInColorMask(pixelColors[targetColor]):
             
             pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
@@ -88,6 +89,17 @@ class cubeImage():
         else:
             
             pixelColors[targetColor] -= 1
+=======
+        st1 = pixelColors[targetColor]
+        
+        pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor] > self.mask.targetColor[targetColor])
+        
+        st2 = pixelColors[targetColor]
+
+        temptListDeCesMorts = ["R","G","B"]
+        
+        print(f"SUPERTESTOTRON2000 {st1} -> {st2}, car {pixelColors[targetColor] > self.mask.targetColor[targetColor]} donc {st2-st1} [TC = {self.mask.targetColor[targetColor]}, {temptListDeCesMorts[targetColor]}]")
+>>>>>>> Stashed changes
         
         return pixelColors
     
@@ -268,7 +280,50 @@ def tempGetSquaresMoche(squareCoords:list):
     
     return squares
 
+<<<<<<< Updated upstream
 def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool = False):
+=======
+def encryptMessage(message:str,sourcePath:str,returnPath:str):
+
+    image = cubeImage(sourcePath)
+    result = sorted(list(image.mask.getColorRange(8 * len(message))))
+    squares1 = image.squares = tempGetSquaresMoche(result)
+    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
+    image.encrypt(message)
+    image.squares = tempGetSquaresMoche([(x, image.source.height - 2) for x in range(0,image.source.width-2,2)])
+    image.encrypt(
+        (
+            "{:03d}".format(image.mask.targetColor[0])
+            + "{:03d}".format(image.mask.targetColor[1])
+            + "{:03d}".format(image.mask.targetColor[2])
+        )
+        + "{:03d}".format(image.mask.tolerance)
+        + "{:03d}".format(image.mask.toleranceIndicator)
+    )
+    image.source.save(returnPath)
+    return squares1, colors
+
+def decryptMessage(sourcePath:str) -> str:
+
+    image = cubeImage(sourcePath)
+    liste = []
+    for x in range(0,image.source.width,2):
+        liste.append((x, image.source.height - 2))
+    image.squares = tempGetSquaresMoche(liste)
+    numbers = image.decrypt()
+    list_numbers = []
+
+    for i in range(5):
+        list_numbers.append(int(numbers[3*i]+numbers[3*i+1]+numbers[3*i+2]))
+    targetColor = tuple([list_numbers[_] for _ in range(3)])
+    tolerance = list_numbers[-2]
+    image.mask.toleranceIndicator = list_numbers[-1]
+    print([targetColor[i] + (j-1)*tolerance for j in range(0, 3, 2)  for i in range(3)])
+
+    image.squares = tempGetSquaresMoche(sorted(list(image.mask.getColorRange(targetColor = targetColor, tolerance = tolerance))))
+    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
+    message = image.decrypt()
+>>>>>>> Stashed changes
     
     return
     
@@ -283,6 +338,7 @@ def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool 
         print("RESULTS",result[1],result[2])
         return result[1],result[2]
 
+<<<<<<< Updated upstream
 def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) -> str:
     
     return
@@ -294,3 +350,27 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     
     message = image.decrypt()
     return message
+=======
+squares1, colors1 = encryptMessage("Hello the world !", "Steganosaurus/farouk.png", "Steganosaurus/kkkeeennnaaannn.png")
+message, squares2, colors2 = decryptMessage("Steganosaurus/kkkeeennnaaannn.png")
+print(message)
+counter = 0
+
+print("ETIREMENT: avant",len(squares1),"après",len(squares2))
+
+for a,b in zip(squares1,squares2):
+    
+    if a not in squares2 or b not in squares1:
+        
+        print("JACOUILLE",a,b)
+
+# for i in range(136):
+#     if i == 0:
+#         print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])
+#     if squares1[i] != squares2[i]:
+#         if counter == 0:
+#             print(i-1, "POSITION", squares1[i-1][0], squares2[i-1][0], "COULEURS", colors1[i-1], colors2[i-1])
+#             counter += 1
+#         print(squares1[i] in squares2)
+#         print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])
+>>>>>>> Stashed changes

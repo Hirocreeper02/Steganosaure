@@ -33,7 +33,12 @@ class colorMask():
         self.colorSet = set()
         self.colorPixelSet = {} # Dictionnaire des pixels compris dans le masque
         self.targetColor = None
+<<<<<<< Updated upstream
         self.tolerance = None 
+=======
+        self.tolerance = None
+        self.colorRepartition = self.getColorRepartition()
+>>>>>>> Stashed changes
     
     def getColorRepartition(self) -> dict:
         """
@@ -44,7 +49,11 @@ class colorMask():
         
         colorRepartition = {}
         
+<<<<<<< Updated upstream
         for x,y in product(range(0,self.source.width,2),range(0,self.source.height,2)):
+=======
+        for x,y in product(range(0,self.source.width,2),range(0,self.source.height-2,2)):
+>>>>>>> Stashed changes
             
             tempColor = self.source.getpixel((x, y))
             
@@ -264,6 +273,7 @@ class colorMask():
             return self._loadRange(targetColor,tolerance)
 
 
+<<<<<<< Updated upstream
 # myMask = colorMask(Image.open("Steganosaurus/kenan.jpeg"))
 # # print(len(myMask.colorRepartition))
 # # print(len(myMask._customColorRepartition((245,163,26),100)))
@@ -274,3 +284,17 @@ class colorMask():
 # print("######################\n##### DECRYPTION #####\n######################\n")
 # range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
 # print(" ")
+=======
+myMask = colorMask(Image.open("Steganosaurus/kkkeeennnaaannn.png"))
+print(len(myMask.colorRepartition))
+print(len(myMask._customColorRepartition((245,163,26), 100)))
+print("\n######################\n##### ENCRYPTION #####\n######################\n")
+range1 = myMask.getColorRange(lengthOfMessage = 100)
+print(f"100 [expected] vs {(myMask.tolerance)} [given]")
+print("TARGET COLOR:", myMask.targetColor,"\n")
+print("######################\n##### DECRYPTION #####\n######################\n")
+range2 = myMask.getColorRange(targetColor = myMask.targetColor, tolerance = myMask.tolerance)
+print(" ")
+print(len(range1))
+print(len(range2))
+>>>>>>> Stashed changes
