@@ -39,9 +39,13 @@ Ce projet consiste en la création de différents algorithmes nous permettant de
 Dans cette section, nous allons détailler la manière d'utiliser nos méthodes. Il y a deux façons de l'approcher, en tant que script ou en tant que module.
 
 ### Utilisation comme script
- 
+Il faut tout d'abord commencer par ouvrir le fichier **steganosaurus.py** (en faisant bien attention à avoir l'image dans le même dossier que le fichier où alors copier scrupuleusement le chemin d'accès au fichier).
+Une fois que le fichier a été run, il suffit de se laisser porter par les instructions.
+
 ### Utilisation comme module
-Après avoir importé le fichier **cubeDilution.py**, il suffit d'appeler la foction **encryptMessage()** en lui passant comme arguments le message (sous forme de chaîne de caractères), le chemin pour accéder à l'image que l'on veut modifier, le chemin de où stocker l'image modifiée et finalement, si on le désire, un **True** pour indiquer si l'on doit utiliser la méthode **ColorDistinction**.
+Après avoir importé le fichier **cubeDilution.py**, il suffit d'appeler la foction **encryptMessage()** en lui passant comme arguments le message (sous forme de chaîne de caractères), le chemin pour accéder à l'image que l'on veut modifier et, finalement, le chemin de où stocker l'image modifiée. Ensuite, pour décrypter, utilisez la fonction **decryptMessage()** avec comme seul argument le chemin d'accès à l'image.
+Si l'utilisateur désire tester nos fonctions, il le peut en runnant le fichier **testDrivenDevelopment.py** mais cela doit se faire depuis le terminal en utilisant cette commande : python3.11 relativepath/testDrivenDevelopment.py. Si il y a besoin de plus de detail, il doit mettre -v à la fin de la commande.
+
 ## Algorithmes
  
 ### CubeDilution
@@ -68,8 +72,9 @@ Il faut après encore décider quelle partie du dictionnaire nous sera utile pou
 ## Journal de bord
 - Début novembre (8 et 10): prémisses des idées des deux méthodes et début du code (travail en groupe à trois)
 - Mi novembre (17): création des dictionnaires de traduction binaire et caractères (travail à trois)
-- du 22.11 au 03.12: travil sur un bug de CubeDilution (trois dessus, résolu par Nils)
+- du 22.11 au 03.12: travail sur un bug de CubeDilution (trois à réfléchir, résolu par Nils)
 - 10.12: optimisation de CubeDilution (Emilien)
 - 14.12 au 26.12: optimisation de ColorDistinction (Emilien)
 - 15.12 au 29.12: création des fonctions de test à posteriori (Nils)
 - 14.12 au 08.01: écriture du README (Yoann)
+- 08.01 : résolution des beugs finaux, finalisation des fonctions et de userInterface (travail à trois)

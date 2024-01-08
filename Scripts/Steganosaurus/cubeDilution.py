@@ -252,6 +252,7 @@ class cubeImage():
         message = translateAlphabetical([self._checkCube(square) for square in self.squares])
         
         return message
+    
 
 def tempGetSquaresMoche(squareCoords:list):
     
@@ -261,6 +262,7 @@ def tempGetSquaresMoche(squareCoords:list):
     ]
     
     return squares
+
 
 def encryptMessage(message:str,sourcePath:str,returnPath:str):
 
@@ -274,6 +276,7 @@ def encryptMessage(message:str,sourcePath:str,returnPath:str):
                   str("{:03d}".format(image.mask.targetColor[2])) + str("{:03d}".format(image.mask.tolerance)) + str("{:03d}".format(image.mask.toleranceIndicator)))
     image.source.save(returnPath)
     return squares1, colors
+
 
 def encryptMessage2(message:str,sourcePath:str,returnPath:str):
 
@@ -299,25 +302,9 @@ def decryptMessage(sourcePath:str) -> str:
     targetColor = tuple([list_numbers[_] for _ in range(3)])
     tolerance = list_numbers[-2]
     image.mask.toleranceIndicator = list_numbers[-1]
-#    print([targetColor[i] + (j-1)*tolerance for j in range(0, 3, 2)  for i in range(3)])
 
     image.squares = tempGetSquaresMoche(sorted(list(image.mask.getColorRange(targetColor = targetColor, tolerance = tolerance))))
-#    colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
+
     message = image.decrypt()
     
     return message
-
-# squares1, colors1 = encryptMessage("Hello the world !aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Scripts/Steganosaurus/farouk.png", "Scripts/Steganosaurus/kkkeeennnaaannn.png")
-# message, squares2, colors2 = decryptMessage("Scripts/Steganosaurus/kkkeeennnaaannn.png")
-# print(message)
-# print(len(squares1), len(squares2))
-# counter = 0
-# for i in range(136):
-#     if i == 0:
-#         print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])
-#     if squares1[i] != squares2[i]:
-#         if counter == 0:
-#             print(i-1, "POSITION", squares1[i-1][0], squares2[i-1][0], "COULEURS", colors1[i-1], colors2[i-1])
-#             counter += 1
-#         print(squares1[i] in squares2)
-#         print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])

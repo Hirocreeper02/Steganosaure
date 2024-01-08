@@ -122,11 +122,8 @@ class colorMask():
             => dictionnaire {(r,g,b):[pixel1,pixel2,...]}
         """
         
-#        print("ROUNDSTEP :",roundStep)
-        
         repartition = {}
         
-#        print("SECURITY CHECK CCR :",len(self.colorRepartition))
         
         for color in self.colorRepartition:
             
@@ -158,8 +155,6 @@ class colorMask():
         
         actualColorRepartition = self._customColorRepartition(targetColor,roundStep)
         
-#        print("CUSTOMCOLORREPARTITION START :",len(actualColorRepartition))
-        
         colorSet = {targetColor}
         
         containedBits = len(self.colorRepartition[targetColor])
@@ -168,8 +163,6 @@ class colorMask():
             
             tolerance += roundStep
             toleranceIndicator += 1
-
-#            print("LOOP WORK CHECK",toleranceIndicator)
                         
             voisins = {
                 (
@@ -196,8 +189,6 @@ class colorMask():
             for pixel in pix
         }
         
-#        print("PIXELS (REAL REFERENTIAL) #01 :",len(colorPixelSet),",",list(colorPixelSet)[0])
-        
         self.colorSet = colorSet
         self.targetColor = targetColor
         self.tolerance = tolerance
@@ -216,15 +207,9 @@ class colorMask():
 
         """
         
-#        print("TOLERANCE INDICATOR:",self.toleranceIndicator)
-        
         roundStep = tolerance//self.toleranceIndicator
         
         actualColorRepartition = self._customColorRepartition(targetColor, roundStep)
-        
-#        print("SELF TOLERANCE",roundStep)
-        
-#        print("CUSTOMCOLORREPARTITION END :",len(actualColorRepartition))
         
         colorPixelSet = set()
         
@@ -248,8 +233,6 @@ class colorMask():
                     for pix in pixel:
                         
                         colorPixelSet.add(pix)
-        
-#        print("PIXELS (REAL REFERENTIAL) #02 :",len(colorPixelSet),",",list(colorPixelSet)[0])
         
         return colorPixelSet
     
