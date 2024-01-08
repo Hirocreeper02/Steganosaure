@@ -81,15 +81,6 @@ class cubeImage():
             Si la valeur dépasse 255, on soustrait 1 au lieu d'ajouter 1
         """
         
-<<<<<<< Updated upstream
-        if self._checkInColorMask(pixelColors[targetColor]):
-            
-            pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor]>=255)
-        
-        else:
-            
-            pixelColors[targetColor] -= 1
-=======
         st1 = pixelColors[targetColor]
         
         pixelColors[targetColor] += 1  - 2 * (pixelColors[targetColor] > self.mask.targetColor[targetColor])
@@ -99,7 +90,6 @@ class cubeImage():
         temptListDeCesMorts = ["R","G","B"]
         
         print(f"SUPERTESTOTRON2000 {st1} -> {st2}, car {pixelColors[targetColor] > self.mask.targetColor[targetColor]} donc {st2-st1} [TC = {self.mask.targetColor[targetColor]}, {temptListDeCesMorts[targetColor]}]")
->>>>>>> Stashed changes
         
         return pixelColors
     
@@ -280,9 +270,6 @@ def tempGetSquaresMoche(squareCoords:list):
     
     return squares
 
-<<<<<<< Updated upstream
-def encryptMessage(message:str,sourcePath:str,returnPath:str,colorGradient:bool = False):
-=======
 def encryptMessage(message:str,sourcePath:str,returnPath:str):
 
     image = cubeImage(sourcePath)
@@ -323,7 +310,6 @@ def decryptMessage(sourcePath:str) -> str:
     image.squares = tempGetSquaresMoche(sorted(list(image.mask.getColorRange(targetColor = targetColor, tolerance = tolerance))))
     colors = [[image.source.getpixel(square[i]) for i in range(4)]for square in image.squares]
     message = image.decrypt()
->>>>>>> Stashed changes
     
     return
     
@@ -338,7 +324,6 @@ def decryptMessage(sourcePath:str) -> str:
         print("RESULTS",result[1],result[2])
         return result[1],result[2]
 
-<<<<<<< Updated upstream
 def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) -> str:
     
     return
@@ -350,7 +335,6 @@ def decryptMessage(sourcePath:str,colorPick:tuple = None, tolerance:int = None) 
     
     message = image.decrypt()
     return message
-=======
 squares1, colors1 = encryptMessage("Hello the world !", "Steganosaurus/farouk.png", "Steganosaurus/kkkeeennnaaannn.png")
 message, squares2, colors2 = decryptMessage("Steganosaurus/kkkeeennnaaannn.png")
 print(message)
@@ -373,4 +357,3 @@ for a,b in zip(squares1,squares2):
 #             counter += 1
 #         print(squares1[i] in squares2)
 #         print(i, "POSITION", squares1[i][0], squares2[i][0], "COULEURS", colors1[i], colors2[i])
->>>>>>> Stashed changes
