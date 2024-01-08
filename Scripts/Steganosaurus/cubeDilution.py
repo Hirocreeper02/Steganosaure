@@ -62,7 +62,10 @@ class cubeImage():
     ### METHODES ###
     ################
     
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     def _incrementColor(self,pixelColors:list,targetColor:int):
         """
             [FONCTION PRIVEE]
@@ -198,7 +201,11 @@ class cubeImage():
                     if transformColor != list(map(lambda x: x%2,actualColor)):
                         
                         actualColor[targetColor] = actualColor[targetColor] - actualColor[targetColor]%2 + transformColor
+<<<<<<< Updated upstream
 
+=======
+                        actualColor[targetColor] = self._incrementColor(actualColor,targetColor)
+>>>>>>> Stashed changes
                         
                         self.source.putpixel(square[i],tuple(actualColor))
 
@@ -309,18 +316,8 @@ def decryptMessage(sourcePath:str) -> str:
     message = image.decrypt()
     
     return
-    
-    image = cubeImage(sourcePath)
-    if colorGradient:
-        result = colorDistinction.getColorRange(colorRepartition = colorDistinction.getColorRepartition(),lengthOfMessage = 8 * len(message))
-        image.squares = tempGetSquaresMoche(sorted(list(result[0]), key=lambda x: (x[0], x[1])))
-    image.encrypt(message)
-    image.source.save(returnPath)
-    
-    if colorGradient:
-        print("RESULTS",result[1],result[2])
-        return result[1],result[2]
 
+<<<<<<< Updated upstream
     image = cubeImage(sourcePath)
     result = sorted(list(image.mask.getColorRange(8 * len(message))))
     squares1 = image.squares = tempGetSquaresMoche(result)
@@ -358,6 +355,11 @@ def decryptMessage(sourcePath:str) -> str:
 
 squares1, colors1 = encryptMessage("Hello the world !", "farouk.png", "kkkeeennnaaannn.png")
 message, squares2, colors2 = decryptMessage("kkkeeennnaaannn.png")
+=======
+
+squares1, colors1 = encryptMessage("Hello the world !", "Steganosaurus/farouk.png", "Steganosaurus/kkkeeennnaaannn.png")
+message, squares2, colors2 = decryptMessage("Steganosaurus/kkkeeennnaaannn.png")
+>>>>>>> Stashed changes
 print(message)
 counter = 0
 for i in range(136):
